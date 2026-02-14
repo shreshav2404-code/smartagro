@@ -1,6 +1,8 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/static/(.*)", "dest": "/backend/static/$1" }
+    { "src": "/static/(.*)", "dest": "/backend/static/$1" },
+    { "src": "/image-analysis/?", "dest": "/index.html" },
+    { "src": "/login.html", "dest": "/index.html" }
   ]
 }
