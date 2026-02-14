@@ -110,6 +110,8 @@
     <script src="/static/theme.js"></script>
     <script src="/static/app.js"></script>
     <script>
+        const API_BASE = (typeof window !== 'undefined' && window.BACKEND_URL ? String(window.BACKEND_URL) : '').replace(/\/$/, '');
+        window.ALLOW_BOGUS_LOGIN = true;
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
             const userString = localStorage.getItem('user');
@@ -135,16 +137,14 @@
                         e.preventDefault();
                         
                         try {
-                            await fetch('http://127.0.0.1:8000/api/logout/', {
+                            await fetch(`${API_BASE}/api/logout/`, {
                                 method: 'POST',
                                 credentials: 'include'
                             });
-                            
-                            // Clear local storage and refresh page
+                        } catch (error) {
+                        } finally {
                             localStorage.removeItem('user');
                             window.location.reload();
-                        } catch (error) {
-                            console.error('Logout error:', error);
                         }
                     });
                     
@@ -153,7 +153,7 @@
                         e.preventDefault();
                         
                         try {
-                            const response = await fetch('http://127.0.0.1:8000/api/profile/', {
+                            const response = await fetch(`${API_BASE}/api/profile/`, {
                                 credentials: 'include'
                             });
                             
@@ -161,14 +161,12 @@
                                 const profileData = await response.json();
                                 alert(`Profile Information:\nName: ${profileData.name}\nEmail: ${profileData.email}\nOccupation: ${profileData.occupation}\nPhone: ${profileData.phone_number}`);
                             } else {
-                                // If unauthorized, clear local storage and refresh
                                 if (response.status === 401) {
-                                    localStorage.removeItem('user');
-                                    window.location.reload();
+                                    alert('Profile not available in demo mode.');
                                 }
                             }
                         } catch (error) {
-                            console.error('Profile error:', error);
+                            alert('Profile not available in demo mode.');
                         }
                     });
                 } catch (e) {

@@ -8,6 +8,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Backend API base URL; set window.BACKEND_URL = 'https://your-backend.example.com' to override
+    const API_BASE = (typeof window !== 'undefined' && window.BACKEND_URL ? String(window.BACKEND_URL) : '').replace(/\/$/, '');
     // Floating chat sidebar logic
     const openChatBtn = document.getElementById('open-chat-btn');
     const chatSidebar = document.getElementById('chat-sidebar');
@@ -79,13 +81,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     formData.append('message', userMsg || '');
                     formData.append('image', selectedImage);
                     
-                    response = await fetch('/api/ai_assistant_image/', {
+                    response = await fetch(`${API_BASE}/api/ai_assistant_image/`, {
                         method: 'POST',
                         body: formData
                     });
                 } else {
                     // Regular text message
-                    response = await fetch('/api/ai_assistant/', {
+                    response = await fetch(`${API_BASE}/api/ai_assistant/`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ message: userMsg })
@@ -200,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fetch and display crops in both crop-list and crop-info-list
-    fetch('/api/crops/')
+    fetch(`${API_BASE}/api/crops/`)
         .then(response => response.json())
         .then(data => {
             const cropList = document.getElementById('crop-list');

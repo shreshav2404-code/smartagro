@@ -30,7 +30,7 @@ SECRET_KEY = 'YOUR_DJANGO_SECRET_KEY'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [h for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h] or ['*']
 
 
 # Application definition
@@ -91,6 +91,20 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# Override DB from DATABASE_URL (e.g., Supabase Postgres) if provided
+db_url = os.getenv('DATABASE_URL') or os.getenv('SUPABASE_DB_URL')
+if db_url:
+    from urllib.parse import urlparse
+    url = urlparse(db_url)
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': (url.path[1:] if len(url.path) > 1 else ''),
+        'USER': url.username or '',
+        'PASSWORD': url.password or '',
+        'HOST': url.hostname or '',
+        'PORT': str(url.port or ''),
+        'OPTIONS': {},
+    }
 
 
 # Password validation
@@ -138,6 +152,12 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [o for o in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if o]
+
+# Cookie settings for cross-site usage when frontend is on different domain
+SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'false').lower() == 'true'
+CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', 'false').lower() == 'true'
+SESSION_COOKIE_SAMESITE = os.getenv('SESSION_COOKIE_SAMESITE', 'Lax')
 
 # Authentication settings
 AUTHENTICATION_BACKENDS = [
