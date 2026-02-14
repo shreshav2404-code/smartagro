@@ -78,9 +78,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contact-section" data-i18n="contact">Contact</a>
                     </li>
-                    <li class="nav-item" id="login-item">
-                        <a class="nav-link" href="login.html" data-i18n="login">Login</a>
-                    </li>
+                    <li class="nav-item" id="login-item"><a class="nav-link" href="#" id="login-btn" data-i18n="login">Login</a></li>
                     <li class="nav-item" id="register-item">
                         <a class="nav-link" href="register.html" data-i18n="register">Register</a>
                     </li>
@@ -231,20 +229,13 @@
             const logoutLink = document.getElementById('logout-link');
             const profileLink = document.getElementById('profile-link');
             
-            // Check if user is authenticated
-            if (!userString) {
-                // Redirect to login page if not authenticated
-                window.location.href = 'login.html';
-                return;
-            }
-            
             if (userString) {
                 try {
                     const user = JSON.parse(userString);
                     
                     // Update UI for logged in user
-                    loginItem.style.display = 'none';
-                    registerItem.style.display = 'none';
+                    if (loginItem) loginItem.style.display = 'none';
+                    if (registerItem) registerItem.style.display = 'none';
                     userDropdown.style.display = 'block';
                     userNameElement.textContent = user.name || user.email;
                     
@@ -290,10 +281,18 @@
                     localStorage.removeItem('user');
                 }
             } else {
-                // User is not logged in
-                loginItem.style.display = 'block';
-                registerItem.style.display = 'block';
+                if (loginItem) loginItem.style.display = 'block';
+                if (registerItem) registerItem.style.display = 'block';
                 userDropdown.style.display = 'none';
+                const loginBtn = document.getElementById('login-btn');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const demoUser = { email: 'demo@local', name: 'Demo', occupation: 'Demo' };
+                        localStorage.setItem('user', JSON.stringify(demoUser));
+                        window.location.reload();
+                    });
+                }
             }
         });
     </script>

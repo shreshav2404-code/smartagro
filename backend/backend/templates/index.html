@@ -44,9 +44,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">Contact</a>
                     </li>
-                    <li class="nav-item" id="login-item">
-                        <a class="nav-link" href="login.html">Login</a>
-                    </li>
+                    <li class="nav-item" id="login-item"><a class="nav-link" href="#" id="login-btn">Login</a></li>
                     <li class="nav-item" id="register-item">
                         <a class="nav-link" href="register.html">Register</a>
                     </li>
@@ -174,10 +172,18 @@
                     localStorage.removeItem('user');
                 }
             } else {
-                // User is not logged in
                 loginItem.style.display = 'block';
                 registerItem.style.display = 'block';
                 userDropdown.style.display = 'none';
+                const loginBtn = document.getElementById('login-btn');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const demoUser = { email: 'demo@local', name: 'Demo', occupation: 'Demo' };
+                        localStorage.setItem('user', JSON.stringify(demoUser));
+                        window.location.reload();
+                    });
+                }
             }
         });
     </script>
