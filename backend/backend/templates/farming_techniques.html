@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farming Techniques - SmartAgro</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/farming_techniques.html" class="active">Farming Techniques</a>
+            <a href="/soil_information.html">Soil Information</a>
+            <a href="/features.html">Features</a>
+        </nav>
+    </header>
+    <main class="container my-4">
+        <h1 class="text-center mb-4">Farming Techniques</h1>
+        
+        <section class="content-section mb-5">
+            <h2 class="mb-3">Modern Agricultural Practices</h2>
+            <p class="lead">Explore innovative farming techniques that can improve your crop yield, sustainability, and farm efficiency.</p>
+            
+            <div class="row mt-4">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Organic Farming">
+                        <div class="card-body">
+                            <h5 class="card-title">Organic Farming</h5>
+                            <p class="card-text">Organic farming relies on natural processes and substances rather than synthetic chemicals. It promotes biodiversity and soil health through composting and natural pest management.</p>
+                            <button class="btn btn-success farming-technique-btn" data-technique="organic">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Precision Agriculture">
+                        <div class="card-body">
+                            <h5 class="card-title">Precision Agriculture</h5>
+                            <p class="card-text">Precision agriculture uses technology like GPS, sensors, drones, and data analytics to optimize inputs and maximize yields while reducing environmental impact.</p>
+                            <button class="btn btn-success farming-technique-btn" data-technique="precision">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Sustainable Harvesting">
+                        <div class="card-body">
+                            <h5 class="card-title">Sustainable Harvesting</h5>
+                            <p class="card-text">Sustainable harvesting methods maintain long-term productivity while minimizing environmental impact through optimal timing and appropriate equipment.</p>
+                            <button class="btn btn-success farming-technique-btn" data-technique="sustainable">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="content-section mb-5">
+            <h2 class="mb-3">Crop Rotation Techniques</h2>
+            <div class="row align-items-center mb-4">
+                <div class="col-md-6">
+                    <p>Crop rotation is the practice of growing different types of crops in the same area across different growing seasons. It helps to reduce soil erosion and increases soil fertility and crop yield.</p>
+                    <ul>
+                        <li><strong>Three-Year Rotation:</strong> Typically includes grains, legumes, and fallow or cover crops</li>
+                        <li><strong>Four-Year Rotation:</strong> Often includes corn, wheat, legumes, and a cover crop</li>
+                        <li><strong>Benefits:</strong> Improves soil structure, reduces pests and diseases, enhances biodiversity</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded" alt="Crop Rotation Diagram">
+                </div>
+            </div>
+        </section>
+        
+        <section class="content-section">
+            <h2 class="mb-3">Pest Management Strategies</h2>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <img src="https://images.unsplash.com/photo-1620857453376-1b2a06125f7a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="img-fluid rounded" alt="Integrated Pest Management">
+                </div>
+                <div class="col-md-6">
+                    <p>Integrated Pest Management (IPM) is an ecosystem-based strategy that focuses on long-term prevention of pests through a combination of techniques:</p>
+                    <ul>
+                        <li><strong>Biological Control:</strong> Using natural enemies of pests</li>
+                        <li><strong>Habitat Manipulation:</strong> Creating environments that discourage pests</li>
+                        <li><strong>Cultural Practices:</strong> Modifying growing techniques to reduce pest establishment</li>
+                        <li><strong>Resistant Varieties:</strong> Using pest-resistant crop varieties</li>
+                        <li><strong>Pesticides:</strong> Used as needed and with minimal risk to people and environment</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Modal for technique details -->
+    <div class="modal fade" id="techniqueModal" tabindex="-1" aria-labelledby="techniqueModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="techniqueModalLabel">Technique Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="techniqueModalContent">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 SmartAgro. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/info_modals.js"></script>
+</body>
+</html>

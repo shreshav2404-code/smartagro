@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenIQ - Farmer Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">GreenIQ</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <!-- Theme Selector -->
+                    <li class="nav-item dropdown theme-selector">
+                        <a class="nav-link dropdown-toggle" href="#" id="themeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-palette-fill"></i> <span>Theme</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="themeDropdown">
+                            <li><a class="dropdown-item theme-option" href="#" data-theme="light" onclick="changeTheme('light')"><i class="bi bi-brightness-high-fill me-2"></i> Light Mode</a></li>
+                            <li><a class="dropdown-item theme-option" href="#" data-theme="dark" onclick="changeTheme('dark')"><i class="bi bi-moon-fill me-2"></i> Dark Mode</a></li>
+                            <li><a class="dropdown-item theme-option" href="#" data-theme="nightLight" onclick="changeTheme('nightLight')"><i class="bi bi-stars me-2"></i> Night Light Mode</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="features.html">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="farming_techniques.html">Farming Techniques</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="marketplace.html">Buy/Sell Platform</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/image-analysis/">Image Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item" id="login-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item" id="register-item">
+                        <a class="nav-link" href="register.html">Register</a>
+                    </li>
+                    <li class="nav-item dropdown" id="user-dropdown" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span id="user-name">User</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#" id="profile-link">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logout-link">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section text-center text-white">
+        <div class="container">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Green field" class="img-fluid rounded mb-4" style="max-height: 320px; object-fit: cover; width: 100%;">
+            <h1 class="display-4">Welcome to GreenIQ</h1>
+            <p class="lead">Your trusted partner in modern agriculture. Get insights, use our tools, and grow smarter.</p>
+            <a href="#features" class="btn btn-primary btn-lg">Learn More</a>
+        </div>
+    </header>
+    <!-- About section removed as requested - content is available on specific pages -->
+
+    <main class="container my-5">
+        <section id="features" class="mb-5">
+            <h2 class="text-center mb-4">Platform Features</h2>
+            <div class="row">
+                <div class="col-md-4 mx-auto">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="feature-icon mb-2">🤖</div>
+                            <h5 class="card-title">AI Assistant</h5>
+                            <p class="card-text">Get personalized advice and answers to your farming questions from our AI-powered assistant.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Farming techniques, soil information, and buy/sell platform sections removed as requested -->
+            </div>
+            <h3 class="text-center mt-4">Available Crops</h3>
+            <div id="crop-list" class="row">
+                <!-- Crop data will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+
+
+    </main>
+
+    <footer id="contact" class="bg-dark text-white text-center p-4">
+        <p>&copy; 2024 GreenIQ. Empowering Farmers with AI.</p>
+        <p>Contact us at <a href="mailto:info@smartagro.com" class="text-white">info@smartagro.com</a></p>
+        <p>Follow us on Twitter: <a href="https://twitter.com/jha_ji24" class="text-white" target="_blank">@jha_ji24</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/theme.js"></script>
+    <script src="/static/app.js"></script>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const userString = localStorage.getItem('user');
+            const loginItem = document.getElementById('login-item');
+            const registerItem = document.getElementById('register-item');
+            const userDropdown = document.getElementById('user-dropdown');
+            const userNameElement = document.getElementById('user-name');
+            const logoutLink = document.getElementById('logout-link');
+            const profileLink = document.getElementById('profile-link');
+            
+            if (userString) {
+                try {
+                    const user = JSON.parse(userString);
+                    
+                    // Update UI for logged in user
+                    loginItem.style.display = 'none';
+                    registerItem.style.display = 'none';
+                    userDropdown.style.display = 'block';
+                    userNameElement.textContent = user.name || user.email;
+                    
+                    // Handle logout
+                    logoutLink.addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        
+                        try {
+                            await fetch('http://127.0.0.1:8000/api/logout/', {
+                                method: 'POST',
+                                credentials: 'include'
+                            });
+                            
+                            // Clear local storage and refresh page
+                            localStorage.removeItem('user');
+                            window.location.reload();
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                        }
+                    });
+                    
+                    // Handle profile link
+                    profileLink.addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        
+                        try {
+                            const response = await fetch('http://127.0.0.1:8000/api/profile/', {
+                                credentials: 'include'
+                            });
+                            
+                            if (response.ok) {
+                                const profileData = await response.json();
+                                alert(`Profile Information:\nName: ${profileData.name}\nEmail: ${profileData.email}\nOccupation: ${profileData.occupation}\nPhone: ${profileData.phone_number}`);
+                            } else {
+                                // If unauthorized, clear local storage and refresh
+                                if (response.status === 401) {
+                                    localStorage.removeItem('user');
+                                    window.location.reload();
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Profile error:', error);
+                        }
+                    });
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                    localStorage.removeItem('user');
+                }
+            } else {
+                // User is not logged in
+                loginItem.style.display = 'block';
+                registerItem.style.display = 'block';
+                userDropdown.style.display = 'none';
+            }
+        });
+    </script>
+    <!-- Floating Chat Button and Sidebar -->
+    <button id="open-chat-btn" class="chat-float-btn" aria-label="Open AI Assistant">💬</button>
+    <div id="chat-sidebar" class="chat-sidebar">
+        <div class="chat-sidebar-header">
+            <span>GreenIQ AI Assistant</span>
+            <button id="close-chat-btn" aria-label="Close">&times;</button>
+        </div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <form id="chat-form" class="chat-form">
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Ask GreenIQ AI..." autocomplete="off" required />
+                <label for="image-upload" class="image-upload-label" title="Upload an image">
+                    <i class="bi bi-image"></i>
+                </label>
+                <input type="file" id="image-upload" accept="image/*" style="display: none;" />
+            </div>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</body>
+</html>

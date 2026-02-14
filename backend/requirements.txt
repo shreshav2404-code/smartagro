@@ -1,0 +1,34 @@
+# SmartAgro Backend Requirements
+
+# Django and related packages
+Django==4.2.7
+django-cors-headers==4.7.0
+django-crispy-forms==2.1
+crispy-bootstrap5==2023.10
+
+# Weather API
+pyowm==3.3.0
+requests==2.32.5
+
+# Database
+asgiref==3.9.1
+sqlparse==0.5.3
+
+# Utilities
+python-dotenv==1.0.0
+python-dateutil==2.9.0.post0
+
+# Security
+cryptography==45.0.6
+
+# API and Data Processing
+numpy==1.26.4
+pandas==2.2.0
+Pillow==10.2.0  # For image processing
+
+# Time and Localization
+tzdata==2025.2
+tzlocal==5.3.1
+
+# AI SDKs (keep in sync with runtime)
+google-generativeai==0.3.1

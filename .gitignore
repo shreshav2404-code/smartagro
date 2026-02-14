@@ -1,0 +1,9 @@
+backend/db.sqlite3
+backend/.env
+*.pyc
+__pycache__/
+.venv/
+node_modules/
+php/storage/data.xml
+.DS_Store
+Thumbs.db
