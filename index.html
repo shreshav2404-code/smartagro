@@ -77,7 +77,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contact-section" data-i18n="contact">Contact</a>
                     </li>
-                    <li class="nav-item" id="login-item"><a class="nav-link" href="#" id="login-btn" data-i18n="login">Login (Direct)</a></li>
+                    <li class="nav-item" id="login-item"><a class="nav-link" href="login.html" id="login-btn" data-i18n="login">Login</a></li>
                     <li class="nav-item" id="register-item">
                         <a class="nav-link" href="register.html" data-i18n="register">Register</a>
                     </li>
@@ -221,6 +221,11 @@
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
             const userString = localStorage.getItem('user');
+            if (!userString && !window.location.pathname.includes('login.html') && !window.location.pathname.includes('register.html')) {
+                window.location.href = 'login.html';
+                return;
+            }
+            const userString = localStorage.getItem('user');
             const loginItem = document.getElementById('login-item');
             const registerItem = document.getElementById('register-item');
             const userDropdown = document.getElementById('user-dropdown');
@@ -283,15 +288,8 @@
                 if (loginItem) loginItem.style.display = 'block';
                 if (registerItem) registerItem.style.display = 'block';
                 userDropdown.style.display = 'none';
-                const loginBtn = document.getElementById('login-btn');
-                if (loginBtn) {
-                    loginBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const demoUser = { email: 'demo@local', name: 'Demo User', occupation: 'Farmer' };
-                        localStorage.setItem('user', JSON.stringify(demoUser));
-                        window.location.reload();
-                    });
-                }
+                // Login button now points directly to login.html
+                // No extra JS needed for direct login
             }
         });
     </script>
