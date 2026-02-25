@@ -1,1 +1,1 @@
-window.BACKEND_URL = 'https://instructions-managers-bat-secondary.trycloudflare.com';
+window.BACKEND_URL = 'https://tel-timer-entertaining-consumers.trycloudflare.com';
