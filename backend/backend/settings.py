@@ -151,11 +151,13 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    'https://greeniqkeshav.vercel.app',
+]
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [o for o in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if o] + [
     'https://greeniqkeshav.vercel.app',
-    'http://20.244.80.78:8000',
 ]
 
 # Cookie settings for cross-site usage when frontend is on different domain
