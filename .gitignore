@@ -7,3 +7,6 @@ node_modules/
 php/storage/data.xml
 .DS_Store
 Thumbs.db
+backend/venv/
+*.pyc
+__pycache__/
