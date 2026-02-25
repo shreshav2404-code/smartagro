@@ -36,11 +36,18 @@ function initCityAutocomplete() {
     autocompleteContainer.style.borderRadius = '4px';
     autocompleteContainer.style.maxHeight = '200px';
     autocompleteContainer.style.overflowY = 'auto';
+    autocompleteContainer.style.top = `${cityInput.offsetTop + cityInput.offsetHeight}px`;
+    autocompleteContainer.style.left = `${cityInput.offsetLeft}px`;
     autocompleteContainer.style.width = `${cityInput.offsetWidth}px`;
     autocompleteContainer.style.marginTop = '2px';
+    autocompleteContainer.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
     
     // Add input event listener
     cityInput.addEventListener('input', function() {
+        // Update width and position on input just in case layout changed
+        autocompleteContainer.style.width = `${cityInput.offsetWidth}px`;
+        autocompleteContainer.style.top = `${cityInput.offsetTop + cityInput.offsetHeight}px`;
+        autocompleteContainer.style.left = `${cityInput.offsetLeft}px`;
         const inputValue = this.value.toLowerCase().trim();
         
         // Clear previous suggestions

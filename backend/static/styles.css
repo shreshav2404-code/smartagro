@@ -111,6 +111,7 @@ body {
 .weather-location {
     display: flex;
     gap: 0.5rem;
+    position: relative;
 }
 
 #weather-city {
