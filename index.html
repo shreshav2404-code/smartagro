@@ -223,7 +223,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const userString = localStorage.getItem('user');
             
-            // Redirect if not logged in
+            // Redirect to login if not authenticated
             if (!userString && !window.location.pathname.includes('login.html') && !window.location.pathname.includes('register.html')) {
                 window.location.href = 'login.html';
                 return;
@@ -244,55 +244,43 @@
                     if (loginItem) loginItem.style.display = 'none';
                     if (registerItem) registerItem.style.display = 'none';
                     userDropdown.style.display = 'block';
-                    userNameElement.textContent = user.name || user.email;
+                    userNameElement.textContent = user.name || user.email || 'User';
                     
                     // Handle logout
                     logoutLink.addEventListener('click', async function(e) {
                         e.preventDefault();
-                        
                         try {
                             await fetch(`${API_BASE}/api/logout/`, {
                                 method: 'POST',
                                 credentials: 'include'
                             });
-                        } catch (error) {
-                        } finally {
+                        } catch (error) {} finally {
                             localStorage.removeItem('user');
-                            window.location.reload();
+                            window.location.href = 'login.html';
                         }
                     });
                     
                     // Handle profile link
                     profileLink.addEventListener('click', async function(e) {
                         e.preventDefault();
-                        
                         try {
                             const response = await fetch(`${API_BASE}/api/profile/`, {
                                 credentials: 'include'
                             });
-                            
                             if (response.ok) {
                                 const profileData = await response.json();
                                 alert(`Profile Information:\nName: ${profileData.name}\nEmail: ${profileData.email}\nOccupation: ${profileData.occupation}\nPhone: ${profileData.phone_number}`);
                             } else {
-                                if (response.status === 401) {
-                                    alert('Profile not available in demo mode.');
-                                }
+                                alert('Profile not available in demo mode.');
                             }
                         } catch (error) {
                             alert('Profile not available in demo mode.');
                         }
                     });
                 } catch (e) {
-                    console.error('Error parsing user data:', e);
                     localStorage.removeItem('user');
+                    window.location.href = 'login.html';
                 }
-            } else {
-                if (loginItem) loginItem.style.display = 'block';
-                if (registerItem) registerItem.style.display = 'block';
-                userDropdown.style.display = 'none';
-                // Login button now points directly to login.html
-                // No extra JS needed for direct login
             }
         });
     </script>
