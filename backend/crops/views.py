@@ -170,10 +170,7 @@ def ai_models(request):
     try:
         api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
         if not api_key:
-            # Fallback: use HF for text-based plant analysis (no image support in free tier)
-            prompt = user_message or "Describe common crop diseases and their treatments."
-            reply = hf_chat(prompt, "You are an agronomy expert. The user uploaded a crop image. Based on their description, provide analysis of likely diseases, pests, and actionable treatment steps.")
-            return JsonResponse({'reply': reply}, status=200)
+            return JsonResponse({'models': [{'name': 'deepseek/deepseek-v3-0324', 'display_name': 'DeepSeek V3 (HuggingFace)', 'supports': ['generate_content']}]})
         genai.configure(api_key=api_key)
         models = genai.list_models()
         # Extract id and supported methods when present
