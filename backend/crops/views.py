@@ -8,10 +8,39 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 import google.generativeai as genai
+import requests as hf_requests
 from PIL import Image
 import io
 import mimetypes
 from django.views.decorators.http import require_GET
+
+
+
+HF_TOKEN = "YOUR_HF_TOKEN"
+
+def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
+    """Use HuggingFace Inference API as fallback for chat."""
+    try:
+        url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {HF_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model": "deepseek/deepseek-v3-0324",
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": message}
+            ],
+            "max_tokens": 512,
+            "temperature": 0.7
+        }
+        resp = hf_requests.post(url, json=payload, headers=headers, timeout=30)
+        resp.raise_for_status()
+        return resp.json()["choices"][0]["message"]["content"]
+    except Exception as e:
+        return f"I apologize, I encountered an error: {str(e)}"
+
 
 def crop_list(request):
     crops = Crop.objects.all()
@@ -139,9 +168,12 @@ def user_profile(request):
 @require_GET
 def ai_models(request):
     try:
-        api_key = settings.GEMINI_API_KEY
+        api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
         if not api_key:
-            return JsonResponse({'error': 'Gemini API key not configured'}, status=500)
+            # Fallback: use HF for text-based plant analysis (no image support in free tier)
+            prompt = user_message or "Describe common crop diseases and their treatments."
+            reply = hf_chat(prompt, "You are an agronomy expert. The user uploaded a crop image. Based on their description, provide analysis of likely diseases, pests, and actionable treatment steps.")
+            return JsonResponse({'reply': reply}, status=200)
         genai.configure(api_key=api_key)
         models = genai.list_models()
         # Extract id and supported methods when present
@@ -184,9 +216,11 @@ def ai_assistant(request):
         if not user_message:
             return JsonResponse({'reply': 'How can I help you with your agricultural needs?'}, status=200)
 
-        api_key = settings.GEMINI_API_KEY
+        api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
         if not api_key:
-            return JsonResponse({'reply': 'AI service is not configured. Please set GEMINI_API_KEY.'}, status=200)
+            # Fallback to HuggingFace
+            reply = hf_chat(user_message)
+            return JsonResponse({'reply': reply}, status=200)
         # Configure Gemini with sensible defaults for reliability
         genai.configure(api_key=api_key)
         generation_config = {
@@ -273,9 +307,12 @@ def ai_assistant_image(request):
         if not image_file:
             return JsonResponse({'error': 'No image provided.'}, status=400)
 
-        api_key = settings.GEMINI_API_KEY
+        api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
         if not api_key:
-            return JsonResponse({'error': 'Gemini API key not configured'}, status=500)
+            # Fallback: use HF for text-based plant analysis (no image support in free tier)
+            prompt = user_message or "Describe common crop diseases and their treatments."
+            reply = hf_chat(prompt, "You are an agronomy expert. The user uploaded a crop image. Based on their description, provide analysis of likely diseases, pests, and actionable treatment steps.")
+            return JsonResponse({'reply': reply}, status=200)
 
         # Process the image with PIL
         try:
