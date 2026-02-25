@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
             chatInput.disabled = true;
             const loadingBubble = appendMessage('Thinking...', 'ai', true);
             try {
-                const response = await fetch('/api/ai_assistant/', {
+                const response = await fetch('http://20.244.80.78:8000/api/ai_assistant/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: userMsg })
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fetch and display crops in both crop-list and crop-info-list
-    fetch('http://127.0.0.1:8000/api/crops/')
+    fetch('http://20.244.80.78:8000/api/crops/')
         .then(response => response.json())
         .then(data => {
             const cropList = document.getElementById('crop-list');

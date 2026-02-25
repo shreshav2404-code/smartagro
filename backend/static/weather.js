@@ -1,5 +1,8 @@
 // Weather component for GreenIQ
 
+// Backend API base
+const WEATHER_API_BASE = (typeof window !== 'undefined' && window.BACKEND_URL ? String(window.BACKEND_URL) : '').replace(/\/$/, '');
+
 // Default city for weather information
 let currentCity = localStorage.getItem('weatherCity') || 'London';
 
@@ -11,7 +14,7 @@ async function fetchWeather(city) {
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
             
-        const response = await fetch(`/api/weather/?city=${encodeURIComponent(normalizedCity)}`);
+        const response = await fetch(`${WEATHER_API_BASE}/api/weather/?city=${encodeURIComponent(normalizedCity)}`);
         if (!response.ok) {
             throw new Error('Weather data not available');
         }
@@ -30,7 +33,7 @@ async function fetchForecast(city, days = 3) {
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
             
-        const response = await fetch(`/api/weather/forecast/?city=${encodeURIComponent(normalizedCity)}&days=${days}`);
+        const response = await fetch(`${WEATHER_API_BASE}/api/weather/forecast/?city=${encodeURIComponent(normalizedCity)}&days=${days}`);
         if (!response.ok) {
             throw new Error('Forecast data not available');
         }
@@ -214,7 +217,7 @@ async function updateWeatherWidget() {
             const lat = 51.5074;
             const lon = -0.1278;
             
-            const aqiData = await fetch(`/api/weather/air-quality/?lat=${lat}&lon=${lon}`);
+            const aqiData = await fetch(`${WEATHER_API_BASE}/api/weather/air-quality/?lat=${lat}&lon=${lon}`);
             const aqiJson = await aqiData.json();
             
             if (aqiJson.status === 'success') {
