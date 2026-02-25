@@ -21,7 +21,7 @@
             const isAuthPage = window.location.pathname.includes('login.html') || window.location.pathname.includes('register.html');
             
             if (!user && !isAuthPage) {
-                window.location.replace('login.html?redirected=true');
+                window.location.replace('index.html?redirected=true');
             } else {
                 // Show body if authenticated or on auth page
                 document.documentElement.style.visibility = 'visible';
