@@ -213,81 +213,23 @@ def ai_assistant(request):
         if not user_message:
             return JsonResponse({'reply': 'How can I help you with your agricultural needs?'}, status=200)
 
-        api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
-        if not api_key:
-            # Fallback to HuggingFace
+        # Use HuggingFace (DeepSeek) by default for SPEED (2s vs 20s)
+        # Fallback to Gemini if needed
+        try:
             reply = hf_chat(user_message)
             return JsonResponse({'reply': reply}, status=200)
-        # Configure Gemini with sensible defaults for reliability
-        genai.configure(api_key=api_key)
-        generation_config = {
-            'max_output_tokens': 512,
-            'temperature': 0.7,
-            'top_p': 0.95,
-            'top_k': 40,
-        }
-        # Use model IDs compatible with current SDK (v1beta expects 'models/...')
-        model = genai.GenerativeModel("models/gemini-flash-latest", generation_config=generation_config)
-
-        try:
+        except Exception:
+            api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
+            if not api_key:
+                return JsonResponse({'reply': "I'm having trouble connecting. Try again later."}, status=200)
+            
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel("gemini-1.5-flash") # Direct fast model
             response = model.generate_content(user_message)
-            # Handle safety or prompt feedback gracefully
-            try:
-                feedback = getattr(response, 'prompt_feedback', None)
-                if feedback and getattr(feedback, 'block_reason', None):
-                    return JsonResponse({'reply': 'The content was blocked by safety filters. Please rephrase.'}, status=200)
-            except Exception:
-                pass
+            return JsonResponse({'reply': response.text}, status=200)
 
-            # Robust text extraction across SDK versions
-            ai_reply = ''
-            try:
-                ai_reply = getattr(response, 'text', '') or ''
-            except Exception:
-                ai_reply = ''
-            if not ai_reply:
-                try:
-                    candidates = getattr(response, 'candidates', []) or []
-                    if candidates:
-                        content = getattr(candidates[0], 'content', None)
-                        parts = getattr(content, 'parts', []) if content else []
-                        texts = []
-                        for part in parts:
-                            t = getattr(part, 'text', '')
-                            if t:
-                                texts.append(t)
-                        ai_reply = '\n'.join(texts).strip()
-                except Exception:
-                    ai_reply = ''
-
-            if not ai_reply:
-                # Fallback attempt with pro-latest if flash returned empty text
-                try:
-                    alt_model = genai.GenerativeModel("models/gemini-pro-latest", generation_config=generation_config)
-                    alt_resp = alt_model.generate_content(user_message)
-                    ai_reply = getattr(alt_resp, 'text', '') or ''
-                except Exception:
-                    ai_reply = ''
-            if not ai_reply:
-                return JsonResponse({'reply': "Sorry, I couldn't generate a response."}, status=200)
-            return JsonResponse({'reply': ai_reply})
-        except Exception as gen_err:
-            # Fallback to a lighter model if we hit quotas or unsupported errors
-            err_msg = str(gen_err)
-            if 'quota' in err_msg.lower() or '429' in err_msg or 'not found' in err_msg.lower():
-                try:
-                    fallback_model = genai.GenerativeModel("models/gemini-flash-latest", generation_config=generation_config)
-                    response = fallback_model.generate_content(user_message)
-                    ai_reply = getattr(response, 'text', '') or ''
-                    if not ai_reply:
-                        return JsonResponse({'reply': "Sorry, I couldn't generate a response."}, status=200)
-                    return JsonResponse({'reply': ai_reply})
-                except Exception:
-                    pass
-            # Provide richer diagnostics in debug mode
-            if getattr(settings, 'DEBUG', False):
-                return JsonResponse({'reply': 'AI service error.', 'error': str(gen_err)}, status=200)
-            return JsonResponse({'reply': 'AI service error. Please try again later.'}, status=200)
+    except Exception as e:
+        return JsonResponse({'reply': 'Sorry, I could not process your request.'}, status=200)
     except Exception as e:
         if getattr(settings, 'DEBUG', False):
             return JsonResponse({'reply': 'Processing error.', 'error': str(e)}, status=200)
