@@ -94,13 +94,13 @@ DATABASES = {
 # Override DB from DATABASE_URL (e.g., Supabase Postgres) if provided
 db_url = os.getenv('DATABASE_URL') or os.getenv('SUPABASE_DB_URL')
 if db_url:
-    from urllib.parse import urlparse
+    from urllib.parse import urlparse, unquote
     url = urlparse(db_url)
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': (url.path[1:] if len(url.path) > 1 else ''),
-        'USER': url.username or '',
-        'PASSWORD': url.password or '',
+        'NAME': unquote(url.path[1:]) if len(url.path) > 1 else '',
+        'USER': unquote(url.username) if url.username else '',
+        'PASSWORD': unquote(url.password) if url.password else '',
         'HOST': url.hostname or '',
         'PORT': str(url.port or ''),
         'OPTIONS': {},
