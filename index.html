@@ -2,6 +2,17 @@
 <html lang="en">
 <head>
     <script src="/static/config.js"></script>
+    <script>
+        // AUTH WALL: Redirect to login immediately if not authenticated
+        // This runs before the rest of the page loads to prevent "flash" of content
+        (function() {
+            const user = localStorage.getItem('user');
+            const isAuthPage = window.location.pathname.includes('login.html') || window.location.pathname.includes('register.html');
+            if (!user && !isAuthPage) {
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GreenIQ - Farmer Platform</title>
@@ -217,18 +228,12 @@
     <script src="/static/info_sections.js"></script>
     <script>
         const API_BASE = (typeof window !== 'undefined' && window.BACKEND_URL ? String(window.BACKEND_URL) : '').replace(/\/$/, '');
-        window.ALLOW_BOGUS_LOGIN = true;
         
-        // Check if user is logged in
+        // UI Logic for logged-in users
         document.addEventListener('DOMContentLoaded', function() {
             const userString = localStorage.getItem('user');
-            
-            // Redirect to login if not authenticated
-            if (!userString && !window.location.pathname.includes('login.html') && !window.location.pathname.includes('register.html')) {
-                window.location.href = 'login.html';
-                return;
-            }
-            
+            if (!userString) return;
+
             const loginItem = document.getElementById('login-item');
             const registerItem = document.getElementById('register-item');
             const userDropdown = document.getElementById('user-dropdown');
@@ -236,51 +241,36 @@
             const logoutLink = document.getElementById('logout-link');
             const profileLink = document.getElementById('profile-link');
             
-            if (userString) {
-                try {
-                    const user = JSON.parse(userString);
-                    
-                    // Update UI for logged in user
-                    if (loginItem) loginItem.style.display = 'none';
-                    if (registerItem) registerItem.style.display = 'none';
-                    userDropdown.style.display = 'block';
-                    userNameElement.textContent = user.name || user.email || 'User';
-                    
-                    // Handle logout
-                    logoutLink.addEventListener('click', async function(e) {
-                        e.preventDefault();
-                        try {
-                            await fetch(`${API_BASE}/api/logout/`, {
-                                method: 'POST',
-                                credentials: 'include'
-                            });
-                        } catch (error) {} finally {
-                            localStorage.removeItem('user');
-                            window.location.href = 'login.html';
-                        }
-                    });
-                    
-                    // Handle profile link
-                    profileLink.addEventListener('click', async function(e) {
-                        e.preventDefault();
-                        try {
-                            const response = await fetch(`${API_BASE}/api/profile/`, {
-                                credentials: 'include'
-                            });
-                            if (response.ok) {
-                                const profileData = await response.json();
-                                alert(`Profile Information:\nName: ${profileData.name}\nEmail: ${profileData.email}\nOccupation: ${profileData.occupation}\nPhone: ${profileData.phone_number}`);
-                            } else {
-                                alert('Profile not available in demo mode.');
-                            }
-                        } catch (error) {
-                            alert('Profile not available in demo mode.');
-                        }
-                    });
-                } catch (e) {
+            try {
+                const user = JSON.parse(userString);
+                if (loginItem) loginItem.style.display = 'none';
+                if (registerItem) registerItem.style.display = 'none';
+                userDropdown.style.display = 'block';
+                userNameElement.textContent = user.name || user.email || 'User';
+                
+                logoutLink.addEventListener('click', async function(e) {
+                    e.preventDefault();
                     localStorage.removeItem('user');
                     window.location.href = 'login.html';
-                }
+                });
+                
+                profileLink.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    try {
+                        const response = await fetch(`${API_BASE}/api/profile/`, { credentials: 'include' });
+                        if (response.ok) {
+                            const p = await response.json();
+                            alert(`Profile:\nName: ${p.name}\nEmail: ${p.email}\nOccupation: ${p.occupation}`);
+                        } else {
+                            alert('Profile not available.');
+                        }
+                    } catch (error) {
+                        alert('Profile not available.');
+                    }
+                });
+            } catch (e) {
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
             }
         });
     </script>
