@@ -218,14 +218,17 @@
     <script>
         const API_BASE = (typeof window !== 'undefined' && window.BACKEND_URL ? String(window.BACKEND_URL) : '').replace(/\/$/, '');
         window.ALLOW_BOGUS_LOGIN = true;
+        
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
             const userString = localStorage.getItem('user');
+            
+            // Redirect if not logged in
             if (!userString && !window.location.pathname.includes('login.html') && !window.location.pathname.includes('register.html')) {
                 window.location.href = 'login.html';
                 return;
             }
-            const userString = localStorage.getItem('user');
+            
             const loginItem = document.getElementById('login-item');
             const registerItem = document.getElementById('register-item');
             const userDropdown = document.getElementById('user-dropdown');
