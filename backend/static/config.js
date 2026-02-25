@@ -1,1 +1,1 @@
-window.BACKEND_URL = 'https://tel-timer-entertaining-consumers.trycloudflare.com';
+window.BACKEND_URL = 'https://friend-emails-logistics-attraction.trycloudflare.com';
