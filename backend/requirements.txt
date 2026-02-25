@@ -31,4 +31,6 @@ tzdata==2025.2
 tzlocal==5.3.1
 
 # AI SDKs (keep in sync with runtime)
-google-generativeai==0.3.1
+google-generativeai==0.3.1gunicorn
+uvicorn
+whitenoise
