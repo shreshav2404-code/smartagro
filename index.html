@@ -2,14 +2,34 @@
 <html lang="en">
 <head>
     <script src="/static/config.js"></script>
+    <style>
+        /* Hide entire page by default to prevent flash of content */
+        html { visibility: hidden; opacity: 0; }
+    </style>
     <script>
         // AUTH WALL: Redirect to login immediately if not authenticated
-        // This runs before the rest of the page loads to prevent "flash" of content
         (function() {
-            const user = localStorage.getItem('user');
+            let user = null;
+            try {
+                const userString = localStorage.getItem('user');
+                if (userString) user = JSON.parse(userString);
+            } catch (e) {
+                console.error("Invalid user data, clearing session.");
+                localStorage.removeItem('user');
+            }
+
             const isAuthPage = window.location.pathname.includes('login.html') || window.location.pathname.includes('register.html');
+            
             if (!user && !isAuthPage) {
-                window.location.href = 'login.html';
+                window.location.replace('login.html?redirected=true');
+            } else {
+                // Show body if authenticated or on auth page
+                document.documentElement.style.visibility = 'visible';
+                document.documentElement.style.opacity = '1';
+                window.addEventListener('load', function() {
+                    document.body.style.visibility = 'visible';
+                    document.body.style.opacity = '1';
+                });
             }
         })();
     </script>
