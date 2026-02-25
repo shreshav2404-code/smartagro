@@ -2,7 +2,14 @@
   "version": 2,
   "routes": [
     { "src": "/static/(.*)", "dest": "/backend/static/$1" },
-    { "src": "/image-analysis/?", "dest": "/index.html" },
-    { "src": "/login.html", "dest": "/index.html" }
+    { "src": "/index.html", "dest": "/index.html" },
+    { "src": "/login.html", "dest": "/login.html" },
+    { "src": "/register.html", "dest": "/register.html" },
+    { "src": "/marketplace.html", "dest": "/marketplace.html" },
+    { "src": "/farming_techniques.html", "dest": "/farming_techniques.html" },
+    { "src": "/soil_information.html", "dest": "/soil_information.html" },
+    { "src": "/features.html", "dest": "/features.html" },
+    { "src": "/image-analysis", "dest": "/index.html" },
+    { "src": "/", "dest": "/index.html" }
   ]
 }
