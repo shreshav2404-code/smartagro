@@ -17,33 +17,49 @@ from django.views.decorators.http import require_GET
 
 
 import os
+import requests as hf_requests
+import groq
 
 HF_TOKEN = os.getenv("HF_TOKEN", "YOUR_HF_TOKEN")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "YOUR_GROQ_API_KEY")
 
 def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
-    """Use HuggingFace Inference API as fallback for chat."""
+    """Use Groq (Llama 3) as the primary fast provider, with HF as fallback."""
     try:
-        url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
-        headers = {
-            "Authorization": f"Bearer {HF_TOKEN}",
-            "Content-Type": "application/json"
-        }
-        payload = {
-            "model": "deepseek/deepseek-v3-0324",
-            "messages": [
+        # Try Groq first - it's incredibly fast and has a generous free tier
+        client = groq.Groq(api_key=GROQ_API_KEY)
+        completion = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": message}
             ],
-            "max_tokens": 512,
-            "temperature": 0.7
-        }
-        resp = hf_requests.post(url, json=payload, headers=headers, timeout=30)
-        if resp.status_code == 402:
-            raise Exception("Payment Required on HF")
-        resp.raise_for_status()
-        return resp.json()["choices"][0]["message"]["content"]
-    except Exception as e:
-        return f"I apologize, I encountered an error: {str(e)}"
+            max_tokens=512,
+            temperature=0.7
+        )
+        return completion.choices[0].message.content
+    except Exception as groq_err:
+        # Fallback to HF if Groq fails
+        try:
+            url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
+            headers = {
+                "Authorization": f"Bearer {HF_TOKEN}",
+                "Content-Type": "application/json"
+            }
+            payload = {
+                "model": "meta-llama/Llama-3.1-70B-Instruct",
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": message}
+                ],
+                "max_tokens": 512,
+                "temperature": 0.7
+            }
+            resp = hf_requests.post(url, json=payload, headers=headers, timeout=30)
+            resp.raise_for_status()
+            return resp.json()["choices"][0]["message"]["content"]
+        except Exception as e:
+            return f"I apologize, I encountered an error: {str(e)}"
 
 
 def crop_list(request):

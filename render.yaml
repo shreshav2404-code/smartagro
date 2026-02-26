@@ -23,3 +23,5 @@ services:
         value: postgresql://postgres.dvtabjxxflpvyuarczcc:@Keshav2404@aws-1-ap-south-1.pooler.supabase.com:5432/postgres
       - key: GEMINI_API_KEY
         value: YOUR_GEMINI_API_KEY
+      - key: GROQ_API_KEY
+        value: YOUR_GROQ_API_KEY
