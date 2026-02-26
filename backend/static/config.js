@@ -1,1 +1,1 @@
-window.BACKEND_URL = 'https://smartagro-gyuc.onrender.com';
+window.BACKEND_URL = 'https://writings-appliances-amsterdam-pubs.trycloudflare.com';
