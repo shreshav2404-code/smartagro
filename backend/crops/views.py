@@ -13,33 +13,31 @@ from PIL import Image
 import io
 import mimetypes
 from django.views.decorators.http import require_GET
-
-
-
 import os
-import requests as hf_requests
-import groq
-from openai import AzureOpenAI
 
 HF_TOKEN = os.getenv("HF_TOKEN", "YOUR_HF_TOKEN")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "YOUR_GROQ_API_KEY")
-AZURE_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT", "https://keshuai.services.ai.azure.com/")
-AZURE_KEY = os.getenv("AZURE_OPENAI_KEY", "ATJ3QNVGVjPpXWUsKAG2k4vCcXicCdREL06DLnZtoLuVAMHHuljQJQQJ99CBACGhslBXJ3w3AAAAACOGp9WK")
 
 def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
-    """Simplified chat logic: Direct Groq (Llama 3) for speed and reliability."""
+    """Simplified chat logic using Groq via direct HTTP requests for speed and reliability."""
     try:
-        client = groq.Groq(api_key=GROQ_API_KEY)
-        completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
+        url = "https://api.groq.com/openai/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model": "llama-3.3-70b-versatile",
+            "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": message}
             ],
-            max_tokens=512,
-            temperature=0.7
-        )
-        return completion.choices[0].message.content
+            "max_tokens": 512,
+            "temperature": 0.7
+        }
+        resp = hf_requests.post(url, json=payload, headers=headers, timeout=30)
+        resp.raise_for_status()
+        return resp.json()["choices"][0]["message"]["content"]
     except Exception as groq_err:
         # Final fallback to a very stable HF model if Groq is down
         try:
@@ -63,7 +61,6 @@ def hf_chat(message, system_prompt="You are an agricultural expert assistant. He
         except Exception as e:
             return f"I apologize, I encountered an error: {str(e)}"
 
-
 def crop_list(request):
     crops = Crop.objects.all()
     data = {"crops": list(crops.values())}
@@ -80,31 +77,25 @@ def register(request):
             occupation = data.get('occupation')
             phone_number = data.get('phone_number')
             
-            # Validate required fields
             if not all([email, password, name, occupation, phone_number]):
                 return JsonResponse({'error': 'All fields are required'}, status=400)
             
-            # Check if user already exists
             if User.objects.filter(email=email).exists():
                 return JsonResponse({'error': 'Email already registered'}, status=400)
             
-            # Create new user
-            username = email.split('@')[0]  # Create username from email
-            # Check if username exists and modify if needed
+            username = email.split('@')[0]
             base_username = username
             counter = 1
             while User.objects.filter(username=username).exists():
                 username = f"{base_username}{counter}"
                 counter += 1
                 
-            # Create the user
             user = User.objects.create_user(
                 username=username,
                 email=email,
-                password=password  # create_user handles password hashing
+                password=password
             )
             
-            # Create the user profile
             profile = UserProfile.objects.create(
                 user=user,
                 name=name,
@@ -128,7 +119,6 @@ def user_login(request):
             if not all([email, password]):
                 return JsonResponse({'error': 'Email and password are required'}, status=400)
             
-            # Get the user by email
             try:
                 user_obj = User.objects.get(email=email)
                 user = authenticate(request, username=user_obj.username, password=password)
@@ -192,10 +182,9 @@ def ai_models(request):
     try:
         api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
         if not api_key:
-            return JsonResponse({'models': [{'name': 'deepseek/deepseek-v3-0324', 'display_name': 'DeepSeek V3 (HuggingFace)', 'supports': ['generate_content']}]})
+            return JsonResponse({'models': [{'name': 'groq/llama-3.3-70b-versatile', 'display_name': 'Llama 3.3 (Groq)', 'supports': ['generate_content']}]})
         genai.configure(api_key=api_key)
         models = genai.list_models()
-        # Extract id and supported methods when present
         result = []
         try:
             for m in models:
@@ -203,7 +192,6 @@ def ai_models(request):
                     'name': getattr(m, 'name', ''),
                     'display_name': getattr(m, 'display_name', ''),
                 }
-                # Some SDK versions expose supported generation methods
                 try:
                     entry['input_token_limit'] = getattr(m, 'input_token_limit', None)
                     entry['output_token_limit'] = getattr(m, 'output_token_limit', None)
@@ -216,7 +204,6 @@ def ai_models(request):
                     pass
                 result.append(entry)
         except Exception:
-            # Fallback to simple serialization
             result = [str(m) for m in models]
         return JsonResponse({'models': result})
     except Exception as e:
@@ -235,12 +222,10 @@ def ai_assistant(request):
         if not user_message:
             return JsonResponse({'reply': 'How can I help you with your agricultural needs?'}, status=200)
 
-        # Use HuggingFace (DeepSeek) by default for SPEED (2s vs 20s)
-        # Fallback to Gemini if needed
         try:
             reply = hf_chat(user_message)
             if "I apologize, I encountered an error" in reply:
-                raise Exception(f"HF Error: {reply}")
+                raise Exception(f"Chat Error: {reply}")
             return JsonResponse({'reply': reply}, status=200)
         except Exception as e:
             api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
@@ -249,7 +234,6 @@ def ai_assistant(request):
             
             try:
                 genai.configure(api_key=api_key)
-                # Try a few common model names in case one is restricted or deprecated in the region
                 model_names = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-flash-latest"]
                 response = None
                 last_err = None
@@ -276,7 +260,6 @@ def ai_assistant(request):
             return JsonResponse({'reply': 'Processing error.', 'error': str(e)}, status=200)
         return JsonResponse({'reply': 'Sorry, I could not process your request.'}, status=200)
 
-
 @csrf_exempt
 @require_POST
 def ai_assistant_image(request):
@@ -289,12 +272,10 @@ def ai_assistant_image(request):
 
         api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
         if not api_key:
-            # Fallback: use HF for text-based plant analysis (no image support in free tier)
             prompt = user_message or "Describe common crop diseases and their treatments."
             reply = hf_chat(prompt, "You are an agronomy expert. The user uploaded a crop image. Based on their description, provide analysis of likely diseases, pests, and actionable treatment steps.")
             return JsonResponse({'reply': reply}, status=200)
 
-        # Process the image with PIL
         try:
             img = Image.open(image_file)
             max_size = 1024
@@ -302,7 +283,6 @@ def ai_assistant_image(request):
                 img.thumbnail((max_size, max_size))
             if img.mode != 'RGB':
                 img = img.convert('RGB')
-            # Heuristic: if image is extremely small, short-circuit with a helpful reply
             w, h = img.size
             if min(w, h) < 16:
                 return JsonResponse({'reply': 'The image is too small for analysis. Please upload a clearer, larger photo of the plant.'}, status=200)
@@ -324,15 +304,12 @@ def ai_assistant_image(request):
                 'top_k': 40,
             }
 
-            # Serialize image to bytes and set correct mime type
-            # Prefer original mime if present; default to JPEG
             mime = getattr(image_file, 'content_type', None) or mimetypes.guess_type(image_file.name)[0] or 'image/jpeg'
             buf = io.BytesIO()
             save_format = 'JPEG'
             if mime.lower() == 'image/png':
                 save_format = 'PNG'
             img.save(buf, format=save_format, quality=90)
-            # For SDK compatibility (e.g., 0.3.x), send as inline_data
             image_part = {
                 'inline_data': {
                     'mime_type': mime,
@@ -340,7 +317,6 @@ def ai_assistant_image(request):
                 }
             }
 
-            # Try a sequence of multimodal-capable models for broad SDK compatibility
             try_models = [
                 "gemini-1.5-flash",
                 "gemini-2.0-flash",
@@ -361,7 +337,7 @@ def ai_assistant_image(request):
                     continue
             if response is None and last_err:
                 raise last_err
-            # Extract text robustly
+            
             ai_reply = ''
             try:
                 ai_reply = getattr(response, 'text', '') or ''
@@ -385,11 +361,9 @@ def ai_assistant_image(request):
                 ai_reply = "Sorry, I couldn't analyze this image."
             return JsonResponse({'reply': ai_reply})
         except Exception as gen_err:
-            # Fallback to a lighter model when quota or support issues occur
             err_msg = str(gen_err)
             if 'quota' in err_msg.lower() or '429' in err_msg or 'not found' in err_msg.lower():
                 try:
-                    # Final attempt with broadly supported model id
                     fallback_model = genai.GenerativeModel("models/gemini-flash-latest", generation_config=generation_config)
                     response = fallback_model.generate_content([prompt, image_part])
                     ai_reply = getattr(response, 'text', '') or ''
@@ -398,8 +372,6 @@ def ai_assistant_image(request):
                     return JsonResponse({'reply': ai_reply})
                 except Exception:
                     pass
-            # Return a friendly message with 200 to avoid frontend hard error
             return JsonResponse({'reply': 'Image analysis service error. Please try again later.', 'error': str(gen_err)}, status=200)
     except Exception as e:
-        # Return a friendly message with 200 to avoid frontend hard error
         return JsonResponse({'reply': 'Could not process the image. Please try another image.', 'error': str(e)}, status=200)
