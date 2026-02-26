@@ -1,10 +1,10 @@
-[2026-02-26 14:50:55 +0000] [25091] [INFO] Starting gunicorn 25.1.0
-[2026-02-26 14:50:55 +0000] [25091] [INFO] Listening at: http://0.0.0.0:8000 (25091)
-[2026-02-26 14:50:55 +0000] [25091] [INFO] Using worker: sync
-[2026-02-26 14:50:55 +0000] [25091] [INFO] Control socket listening at /home/azureuser/.openclaw/workspace/projects/smartagro/backend/gunicorn.ctl
-[2026-02-26 14:50:55 +0000] [25099] [INFO] Booting worker with pid: 25099
-[2026-02-26 14:50:55 +0000] [25101] [INFO] Booting worker with pid: 25101
-[2026-02-26 14:50:55 +0000] [25102] [INFO] Booting worker with pid: 25102
+[2026-02-26 15:54:22 +0000] [32268] [INFO] Starting gunicorn 25.1.0
+[2026-02-26 15:54:22 +0000] [32268] [INFO] Listening at: http://0.0.0.0:8000 (32268)
+[2026-02-26 15:54:22 +0000] [32268] [INFO] Using worker: sync
+[2026-02-26 15:54:22 +0000] [32268] [INFO] Control socket listening at /home/azureuser/.openclaw/workspace/projects/smartagro/backend/gunicorn.ctl
+[2026-02-26 15:54:22 +0000] [32270] [INFO] Booting worker with pid: 32270
+[2026-02-26 15:54:22 +0000] [32271] [INFO] Booting worker with pid: 32271
+[2026-02-26 15:54:22 +0000] [32272] [INFO] Booting worker with pid: 32272
 /home/azureuser/.openclaw/workspace/projects/smartagro/backend/crops/views.py:10: FutureWarning: 
 
 All support for the `google.generativeai` package has ended. It will no longer be receiving 
@@ -32,13 +32,7 @@ See README for more details:
 https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
 
   import google.generativeai as genai
-Unauthorized: /api/login/
-Not Found: /bins/
-[2026-02-26 15:20:55 +0000] [25101] [INFO] Worker exiting (pid: 25101)
-[2026-02-26 15:20:55 +0000] [25102] [INFO] Worker exiting (pid: 25102)
-[2026-02-26 15:20:55 +0000] [25099] [INFO] Worker exiting (pid: 25099)
-[2026-02-26 15:20:55 +0000] [25091] [INFO] Handling signal: term
-[2026-02-26 15:20:55 +0000] [25091] [INFO] Worker (pid:25099) was sent SIGTERM!
-[2026-02-26 15:20:55 +0000] [25091] [INFO] Worker (pid:25101) was sent SIGTERM!
-[2026-02-26 15:20:55 +0000] [25091] [INFO] Worker (pid:25102) was sent SIGTERM!
-[2026-02-26 15:20:55 +0000] [25091] [INFO] Shutting down: Master
+/home/azureuser/.openclaw/workspace/projects/smartagro/backend/crops/views.py:220: RuntimeWarning: This package (`duckduckgo_search`) has been renamed to `ddgs`! Use `pip install ddgs` instead.
+  with DDGS() as ddgs:
+/home/azureuser/.openclaw/workspace/projects/smartagro/backend/crops/views.py:220: RuntimeWarning: This package (`duckduckgo_search`) has been renamed to `ddgs`! Use `pip install ddgs` instead.
+  with DDGS() as ddgs:

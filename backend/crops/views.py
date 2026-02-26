@@ -20,8 +20,21 @@ HF_TOKEN = os.getenv("HF_TOKEN", "YOUR_HF_TOKEN")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "YOUR_GROQ_API_KEY")
 
 def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
-    """Simplified chat logic using Groq via direct HTTP requests for speed and reliability."""
+    """Simplified chat logic using Groq via direct HTTP requests with search integration."""
     try:
+        # Check if the user is asking for news
+        news_keywords = ['news', 'latest', 'current', 'happenings', 'recent']
+        if any(kw in message.lower() for kw in news_keywords):
+            try:
+                results = []
+                with DDGS() as ddgs:
+                    for r in ddgs.news("latest agriculture news India", max_results=3):
+                        results.append(f"- {r.get('title')} ({r.get('source')}): {r.get('url')}")
+                if results:
+                    message = f"{message}\n\n(Context - Real-time Agri News found: {'; '.join(results)})"
+            except:
+                pass
+
         url = "https://api.groq.com/openai/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {GROQ_API_KEY}",
