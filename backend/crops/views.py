@@ -34,8 +34,8 @@ def azure_chat(message, system_prompt):
             api_key=AZURE_KEY,
             api_version="2024-02-15-preview"
         )
-        # Trying a few common older deployment names
-        try_deployments = ["gpt-4o-mini", "gpt-35-turbo", "gpt-35-turbo-16k"]
+        # Updated to include DeepSeek fallback name
+        try_deployments = ["gpt-4o-mini", "gpt-35-turbo", "gpt-35-turbo-16k", "deepseek-v3"]
         last_err = None
         for dep in try_deployments:
             try:
