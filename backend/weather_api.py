@@ -6,8 +6,20 @@ API_KEY = "YOUR_OPENWEATHERMAP_API_KEY"
 
 def get_current_weather(city):
     try:
-        # Use direct API call to avoid pyowm/pkg_resources issues
-        url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+        # Step 1: Try to get coordinates for the place
+        geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={API_KEY}"
+        geo_resp = requests.get(geo_url)
+        geo_data = geo_resp.json()
+        
+        if geo_data:
+            lat = geo_data[0]['lat']
+            lon = geo_data[0]['lon']
+            # Step 2: Fetch weather using coordinates (more accurate for small towns)
+            url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&units=metric"
+        else:
+            # Fallback to name search if geocoding fails
+            url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+            
         response = requests.get(url)
         response.raise_for_status()
         data_json = response.json()
@@ -46,8 +58,16 @@ def get_current_weather(city):
 
 def get_weather_forecast(city, days=5):
     try:
-        # Use direct API call
-        url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units=metric"
+        # Step 1: Geocode
+        geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={API_KEY}"
+        geo_data = requests.get(geo_url).json()
+        
+        if geo_data:
+            lat, lon = geo_data[0]['lat'], geo_data[0]['lon']
+            url = f"http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API_KEY}&units=metric"
+        else:
+            url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units=metric"
+            
         response = requests.get(url)
         response.raise_for_status()
         data_json = response.json()
