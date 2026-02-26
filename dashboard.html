@@ -226,9 +226,33 @@
         
 
         <section id="contact-section" class="mb-5 p-5 rounded bg-light">
-            <h2 class="text-center mb-4" data-i18n="contact">Contact</h2>
+            <h2 class="text-center mb-4" data-i18n="contact">Contact Us</h2>
             <div class="row justify-content-center">
-                <div class="col-md-8 text-center">
+                <div class="col-md-6">
+                    <form action="https://api.web3forms.com/submit" method="POST" id="contact-form" class="bg-white p-4 rounded shadow-sm">
+                        <input type="hidden" name="access_key" value="a2662afb-f8c3-4bb7-b27f-b8c532568e00">
+                        <input type="hidden" name="subject" value="New Contact from GreenIQ Farmer Platform">
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">How can we help you?</label>
+                            <textarea name="message" id="message" rows="4" class="form-control" placeholder="Write your message here..." required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </div>
+                    </form>
+                    <div id="form-result" class="mt-3 text-center"></div>
+                </div>
+                <div class="col-md-12 text-center mt-5">
                     <p>Made with ❤️ by Keshav Jha, a farmer's son to other farmers</p>
                     <p><span data-i18n="contact_us">Contact us at</span> <a href="mailto:kkjha537428@gmail.com">kkjha537428@gmail.com</a></p>
                     <p>Follow us on Instagram: <a href="https://www.instagram.com/the_jha_keshav2404" target="_blank">@the_jha_keshav2404</a></p>
@@ -247,6 +271,50 @@
     <script src="/static/app.js"></script>
     <script src="/static/info_sections.js"></script>
     <script>
+        // Web3Forms Handling
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                const result = document.getElementById('form-result');
+                result.innerHTML = "Sending...";
+
+                // Handle via Fetch to prevent redirect
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+
+                fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    })
+                    .then(async (response) => {
+                        let json = await response.json();
+                        if (response.status == 200) {
+                            result.innerHTML = "Success! We'll get back to you soon.";
+                            result.style.color = "green";
+                            contactForm.reset();
+                        } else {
+                            console.log(response);
+                            result.innerHTML = json.message;
+                            result.style.color = "red";
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        result.innerHTML = "Something went wrong!";
+                    })
+                    .then(function() {
+                        setTimeout(() => {
+                            result.innerHTML = "";
+                        }, 5000);
+                    });
+            });
+        }
         const API_BASE = (typeof window !== 'undefined' && window.BACKEND_URL ? String(window.BACKEND_URL) : '').replace(/\/$/, '');
         
         // UI Logic for logged-in users
