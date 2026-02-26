@@ -16,7 +16,9 @@ from django.views.decorators.http import require_GET
 
 
 
-HF_TOKEN = "YOUR_HF_TOKEN"
+import os
+
+HF_TOKEN = os.getenv("HF_TOKEN", "YOUR_HF_TOKEN")
 
 def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
     """Use HuggingFace Inference API as fallback for chat."""
