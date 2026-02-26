@@ -131,12 +131,7 @@
     <div class="news-marquee" role="region" aria-label="Government and Agriculture News">
         <!-- HTML marquee for broad browser support -->
         <marquee id="news-marquee" behavior="scroll" direction="right" scrollamount="6" onmouseover="this.stop()" onmouseout="this.start()">
-            <span class="news-item"><span class="badge rounded-pill">Govt</span> <a href="#">MSP updated for Kharif crops FY 2025-26</a></span>
-            <span class="news-item"><span class="badge rounded-pill">Advisory</span> <a href="#">Monsoon advisory: prepare drainage for heavy rains</a></span>
-            <span class="news-item"><span class="badge rounded-pill">Scheme</span> <a href="#">Subsidy on drip irrigation equipment announced</a></span>
-            <span class="news-item"><span class="badge rounded-pill">Alert</span> <a href="#">Locust activity reported in western region</a></span>
-            <span class="news-item"><span class="badge rounded-pill">Market</span> <a href="#">Wheat prices steady; check local mandi rates</a></span>
-            <span class="news-item"><span class="badge rounded-pill">Training</span> <a href="#">Free soil health workshop next week</a></span>
+            <span class="news-item"><span class="badge rounded-pill">Agri News</span> Loading latest real-time news...</span>
         </marquee>
     </div>
 
@@ -152,18 +147,10 @@
     <!-- Weather Widget Section -->
     <section class="weather-section py-4">
         <div class="container">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div id="weather-widget" class="weather-widget">
                         <!-- Weather widget content will be loaded dynamically via JavaScript -->
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="news-section bg-white p-4 rounded shadow-sm h-100">
-                        <h4 class="mb-3">🌾 Agri News</h4>
-                        <div id="agri-news-content" class="small">
-                            <div class="text-center p-3">Loading latest news...</div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -279,30 +266,29 @@
     <script src="/static/app.js"></script>
     <script src="/static/info_sections.js"></script>
     <script>
-        // Agri News Fetcher
-        async function fetchAgriNews() {
-            const newsContent = document.getElementById('agri-news-content');
+        // Agri News Marquee Updater
+        async function updateAgriMarquee() {
+            const marquee = document.getElementById('news-marquee');
             try {
                 const response = await fetch(`${API_BASE}/api/news/`);
                 const data = await response.json();
                 if (data.status === 'success' && data.news.length > 0) {
-                    newsContent.innerHTML = data.news.map(item => `
-                        <div class="mb-3 border-bottom pb-2">
-                            <h6 class="mb-1"><a href="${item.url}" target="_blank" class="text-decoration-none text-success">${item.title}</a></h6>
-                            <p class="text-muted mb-1" style="font-size: 0.8rem;">${item.body ? item.body.substring(0, 80) + '...' : ''}</p>
-                            <small class="text-secondary">${item.source} • ${item.date ? new Date(item.date).toLocaleDateString() : 'Today'}</small>
-                        </div>
-                    `).join('');
-                } else {
-                    newsContent.innerHTML = "No news found at the moment.";
+                    marquee.innerHTML = data.news.map(item => `
+                        <span class="news-item">
+                            <span class="badge rounded-pill" style="background-color: #ffd700; color: #000;">LATEST</span> 
+                            <a href="${item.url}" target="_blank" style="color: white; text-decoration: none; font-weight: 500;">
+                                ${item.title}
+                            </a>
+                        </span>
+                    `).join(' &nbsp; | &nbsp; ');
                 }
             } catch (err) {
-                newsContent.innerHTML = "Unable to load news.";
+                console.error("Marquee update failed:", err);
             }
         }
 
         // Initialize News
-        document.addEventListener('DOMContentLoaded', fetchAgriNews);
+        document.addEventListener('DOMContentLoaded', updateAgriMarquee);
 
         // Web3Forms Handling
         const contactForm = document.getElementById('contact-form');
