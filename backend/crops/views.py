@@ -231,9 +231,25 @@ def ai_assistant(request):
             
             try:
                 genai.configure(api_key=api_key)
-                model = genai.GenerativeModel("gemini-1.5-flash") # Direct fast model
-                response = model.generate_content(user_message)
-                return JsonResponse({'reply': response.text}, status=200)
+                # Try a few common model names in case one is restricted or deprecated in the region
+                model_names = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-flash-latest"]
+                response = None
+                last_err = None
+                
+                for model_name in model_names:
+                    try:
+                        model = genai.GenerativeModel(model_name)
+                        response = model.generate_content(user_message)
+                        if response:
+                            break
+                    except Exception as e:
+                        last_err = e
+                        continue
+                
+                if response:
+                    return JsonResponse({'reply': response.text}, status=200)
+                else:
+                    raise last_err or Exception("Failed to generate content with available models.")
             except Exception as gen_err:
                 return JsonResponse({'reply': f"AI service currently unavailable. (Error: {str(gen_err)})"}, status=200)
 
@@ -308,10 +324,11 @@ def ai_assistant_image(request):
 
             # Try a sequence of multimodal-capable models for broad SDK compatibility
             try_models = [
-                "models/gemini-2.5-flash-image",
-                "models/gemini-2.5-flash",
-                "models/gemini-flash-latest",
-                "models/gemini-pro-latest",
+                "gemini-1.5-flash",
+                "gemini-2.0-flash",
+                "gemini-1.5-flash-latest",
+                "gemini-flash-latest",
+                "gemini-pro-latest",
             ]
             response = None
             last_err = None

@@ -1,34 +1,41 @@
 import os
 import requests
 from datetime import datetime
+
 API_KEY = "YOUR_OPENWEATHERMAP_API_KEY"
 
 def get_current_weather(city):
     try:
-        import pyowm
-        owm = pyowm.OWM(API_KEY)
-        mgr = owm.weather_manager()
-        observation = mgr.weather_at_place(city)
-        weather = observation.weather
+        # Use direct API call to avoid pyowm/pkg_resources issues
+        url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+        response = requests.get(url)
+        response.raise_for_status()
+        data_json = response.json()
+        
+        weather = data_json['weather'][0]
+        main = data_json['main']
+        wind = data_json['wind']
+        sys = data_json['sys']
+        
         data = {
             "status": "success",
             "location": city,
-            "description": weather.detailed_status,
+            "description": weather['description'],
             "temperature": {
-                "current": weather.temperature('celsius').get('temp'),
-                "min": weather.temperature('celsius').get('temp_min'),
-                "max": weather.temperature('celsius').get('temp_max')
+                "current": main['temp'],
+                "min": main['temp_min'],
+                "max": main['temp_max']
             },
-            "humidity": weather.humidity,
+            "humidity": main['humidity'],
             "wind": {
-                "speed": weather.wind().get('speed'),
-                "direction": weather.wind().get('deg')
+                "speed": wind.get('speed'),
+                "direction": wind.get('deg')
             },
-            "clouds": weather.clouds,
-            "rain": weather.rain,
-            "sunrise": datetime.fromtimestamp(weather.sunrise_time()).strftime('%H:%M'),
-            "sunset": datetime.fromtimestamp(weather.sunset_time()).strftime('%H:%M'),
-            "icon": weather.weather_icon_name
+            "clouds": data_json.get('clouds', {}).get('all'),
+            "rain": data_json.get('rain'),
+            "sunrise": datetime.fromtimestamp(sys['sunrise']).strftime('%H:%M'),
+            "sunset": datetime.fromtimestamp(sys['sunset']).strftime('%H:%M'),
+            "icon": weather['icon']
         }
         return data
     except Exception as e:
@@ -39,23 +46,28 @@ def get_current_weather(city):
 
 def get_weather_forecast(city, days=5):
     try:
-        import pyowm
-        owm = pyowm.OWM(API_KEY)
-        mgr = owm.weather_manager()
-        forecaster = mgr.forecast_at_place(city, '3h')
-        forecast = forecaster.forecast
+        # Use direct API call
+        url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units=metric"
+        response = requests.get(url)
+        response.raise_for_status()
+        data_json = response.json()
+        
         forecast_data = []
-        for weather in forecast.weathers[:days*8]:
+        # The API returns 3-hour intervals. 8 intervals = 1 day.
+        for item in data_json['list'][:days*8]:
+            weather = item['weather'][0]
+            main = item['main']
             data = {
-                "reference_time": datetime.fromtimestamp(weather.reference_time()).strftime('%Y-%m-%d %H:%M'),
-                "description": weather.detailed_status,
-                "temperature": weather.temperature('celsius').get('temp'),
-                "humidity": weather.humidity,
-                "wind_speed": weather.wind().get('speed'),
-                "clouds": weather.clouds,
-                "icon": weather.weather_icon_name
+                "reference_time": datetime.fromtimestamp(item['dt']).strftime('%Y-%m-%d %H:%M'),
+                "description": weather['description'],
+                "temperature": main['temp'],
+                "humidity": main['humidity'],
+                "wind_speed": item['wind'].get('speed'),
+                "clouds": item.get('clouds', {}).get('all'),
+                "icon": weather['icon']
             }
             forecast_data.append(data)
+            
         return {
             "status": "success",
             "location": city,
