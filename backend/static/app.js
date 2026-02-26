@@ -24,26 +24,42 @@ document.addEventListener('DOMContentLoaded', function () {
     if (openChatBtn && chatSidebar && closeChatBtn) {
         openChatBtn.addEventListener('click', () => {
             chatSidebar.classList.add('open');
-            // Small delay to ensure sidebar transition is smooth before focus
+            // Improved focus for in-app browsers (Instagram/Telegram)
             setTimeout(() => {
                 chatInput.focus();
-                chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }, 300);
+                // Ensure the input is visible even in restricted webviews
+                chatInput.scrollIntoView({ behavior: 'auto', block: 'center' });
+            }, 500);
         });
         closeChatBtn.addEventListener('click', () => {
             chatSidebar.classList.remove('open');
         });
     }
 
-    // Improve mobile experience: scroll to input when focused
+    // Comprehensive mobile experience fix for in-app browsers
     if (chatInput) {
-        chatInput.addEventListener('focus', () => {
-            setTimeout(() => {
+        const handleVisualViewportResize = () => {
+            if (window.visualViewport && chatSidebar.classList.contains('open')) {
+                const viewportHeight = window.visualViewport.height;
+                chatSidebar.style.height = `${viewportHeight}px`;
                 chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                // Ensure messages are scrolled to bottom to see latest
+            }
+        };
+
+        chatInput.addEventListener('focus', () => {
+            // Force scroll for browsers that don't auto-resize height
+            setTimeout(() => {
+                window.scrollTo(0, 0); 
+                document.body.scrollTop = 0;
+                chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }, 300);
         });
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', handleVisualViewportResize);
+            window.visualViewport.addEventListener('scroll', handleVisualViewportResize);
+        }
     }
 
     // Image upload handling - only add event listener if element exists
