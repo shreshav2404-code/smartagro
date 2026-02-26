@@ -1,1 +1,1 @@
-window.BACKEND_URL = 'https://eternal-competitors-cleanup-pmid.trycloudflare.com';
+window.BACKEND_URL = 'https://smartagro-gyuc.onrender.com';

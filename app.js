@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
             chatInput.disabled = true;
             const loadingBubble = appendMessage('Thinking...', 'ai', true);
             try {
-                const response = await fetch('https://instructions-managers-bat-secondary.trycloudflare.com/api/ai_assistant/', {
+                const response = await fetch('https://smartagro-gyuc.onrender.com/api/ai_assistant/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: userMsg })
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fetch and display crops in both crop-list and crop-info-list
-    fetch('https://instructions-managers-bat-secondary.trycloudflare.com/api/crops/')
+    fetch('https://smartagro-gyuc.onrender.com/api/crops/')
         .then(response => response.json())
         .then(data => {
             const cropList = document.getElementById('crop-list');
