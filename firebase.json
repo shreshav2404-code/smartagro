@@ -1,0 +1,28 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "backend/**",
+      "venv/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "run": {
+          "serviceId": "smartagro-backend",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/admin/**",
+        "run": {
+          "serviceId": "smartagro-backend",
+          "region": "us-central1"
+        }
+      }
+    ]
+  }
+}
