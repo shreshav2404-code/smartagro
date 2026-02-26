@@ -24,10 +24,25 @@ document.addEventListener('DOMContentLoaded', function () {
     if (openChatBtn && chatSidebar && closeChatBtn) {
         openChatBtn.addEventListener('click', () => {
             chatSidebar.classList.add('open');
-            chatInput.focus();
+            // Small delay to ensure sidebar transition is smooth before focus
+            setTimeout(() => {
+                chatInput.focus();
+                chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 300);
         });
         closeChatBtn.addEventListener('click', () => {
             chatSidebar.classList.remove('open');
+        });
+    }
+
+    // Improve mobile experience: scroll to input when focused
+    if (chatInput) {
+        chatInput.addEventListener('focus', () => {
+            setTimeout(() => {
+                chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                // Ensure messages are scrolled to bottom to see latest
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 300);
         });
     }
 
