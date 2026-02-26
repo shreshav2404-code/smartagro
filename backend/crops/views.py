@@ -26,76 +26,42 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY", "YOUR_GROQ_API_KEY")
 AZURE_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT", "https://keshuai.services.ai.azure.com/")
 AZURE_KEY = os.getenv("AZURE_OPENAI_KEY", "ATJ3QNVGVjPpXWUsKAG2k4vCcXicCdREL06DLnZtoLuVAMHHuljQJQQJ99CBACGhslBXJ3w3AAAAACOGp9WK")
 
-def azure_chat(message, system_prompt):
-    """Use Azure OpenAI (gpt-35-turbo) as the premium provider."""
-    try:
-        client = AzureOpenAI(
-            azure_endpoint=AZURE_ENDPOINT,
-            api_key=AZURE_KEY,
-            api_version="2024-02-15-preview"
-        )
-        # Updated to include DeepSeek fallback name
-        try_deployments = ["gpt-4o-mini", "gpt-35-turbo", "gpt-35-turbo-16k", "deepseek-v3"]
-        last_err = None
-        for dep in try_deployments:
-            try:
-                completion = client.chat.completions.create(
-                    model=dep, 
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": message}
-                    ],
-                    max_tokens=512
-                )
-                return completion.choices[0].message.content
-            except Exception as e:
-                last_err = e
-                continue
-        raise last_err or Exception("Azure deployment not found")
-    except Exception as e:
-        raise e
-
 def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
-    """Multi-provider chat logic: Azure -> Groq -> HF."""
-    # Try Azure first for premium quality
+    """Simplified chat logic: Direct Groq (Llama 3) for speed and reliability."""
     try:
-        return azure_chat(message, system_prompt)
-    except Exception as azure_err:
-        # Fallback to Groq for speed/free tier
+        client = groq.Groq(api_key=GROQ_API_KEY)
+        completion = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": message}
+            ],
+            max_tokens=512,
+            temperature=0.7
+        )
+        return completion.choices[0].message.content
+    except Exception as groq_err:
+        # Final fallback to a very stable HF model if Groq is down
         try:
-            client = groq.Groq(api_key=GROQ_API_KEY)
-            completion = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                messages=[
+            url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
+            headers = {
+                "Authorization": f"Bearer {HF_TOKEN}",
+                "Content-Type": "application/json"
+            }
+            payload = {
+                "model": "meta-llama/Llama-3.1-70B-Instruct",
+                "messages": [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": message}
                 ],
-                max_tokens=512,
-                temperature=0.7
-            )
-            return completion.choices[0].message.content
-        except Exception as groq_err:
-            # Final fallback to HF
-            try:
-                url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
-                headers = {
-                    "Authorization": f"Bearer {HF_TOKEN}",
-                    "Content-Type": "application/json"
-                }
-                payload = {
-                    "model": "meta-llama/Llama-3.1-70B-Instruct",
-                    "messages": [
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": message}
-                    ],
-                    "max_tokens": 512,
-                    "temperature": 0.7
-                }
-                resp = hf_requests.post(url, json=payload, headers=headers, timeout=30)
-                resp.raise_for_status()
-                return resp.json()["choices"][0]["message"]["content"]
-            except Exception as e:
-                return f"I apologize, I encountered an error: {str(e)}"
+                "max_tokens": 512,
+                "temperature": 0.7
+            }
+            resp = hf_requests.post(url, json=payload, headers=headers, timeout=30)
+            resp.raise_for_status()
+            return resp.json()["choices"][0]["message"]["content"]
+        except Exception as e:
+            return f"I apologize, I encountered an error: {str(e)}"
 
 
 def crop_list(request):
