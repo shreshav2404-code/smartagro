@@ -162,6 +162,8 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [o for o in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if o] + [
     'https://greeniqkeshav.vercel.app',
+    'https://smartagro-c67f4.web.app',
+    'https://smartagro-c67f4.firebaseapp.com',
 ]
 
 # Cookie settings for cross-site usage when frontend is on different domain
