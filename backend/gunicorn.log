@@ -1,0 +1,44 @@
+[2026-02-26 14:50:55 +0000] [25091] [INFO] Starting gunicorn 25.1.0
+[2026-02-26 14:50:55 +0000] [25091] [INFO] Listening at: http://0.0.0.0:8000 (25091)
+[2026-02-26 14:50:55 +0000] [25091] [INFO] Using worker: sync
+[2026-02-26 14:50:55 +0000] [25091] [INFO] Control socket listening at /home/azureuser/.openclaw/workspace/projects/smartagro/backend/gunicorn.ctl
+[2026-02-26 14:50:55 +0000] [25099] [INFO] Booting worker with pid: 25099
+[2026-02-26 14:50:55 +0000] [25101] [INFO] Booting worker with pid: 25101
+[2026-02-26 14:50:55 +0000] [25102] [INFO] Booting worker with pid: 25102
+/home/azureuser/.openclaw/workspace/projects/smartagro/backend/crops/views.py:10: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+/home/azureuser/.openclaw/workspace/projects/smartagro/backend/crops/views.py:10: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+/home/azureuser/.openclaw/workspace/projects/smartagro/backend/crops/views.py:10: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  import google.generativeai as genai
+Unauthorized: /api/login/
+Not Found: /bins/
+[2026-02-26 15:20:55 +0000] [25101] [INFO] Worker exiting (pid: 25101)
+[2026-02-26 15:20:55 +0000] [25102] [INFO] Worker exiting (pid: 25102)
+[2026-02-26 15:20:55 +0000] [25099] [INFO] Worker exiting (pid: 25099)
+[2026-02-26 15:20:55 +0000] [25091] [INFO] Handling signal: term
+[2026-02-26 15:20:55 +0000] [25091] [INFO] Worker (pid:25099) was sent SIGTERM!
+[2026-02-26 15:20:55 +0000] [25091] [INFO] Worker (pid:25101) was sent SIGTERM!
+[2026-02-26 15:20:55 +0000] [25091] [INFO] Worker (pid:25102) was sent SIGTERM!
+[2026-02-26 15:20:55 +0000] [25091] [INFO] Shutting down: Master

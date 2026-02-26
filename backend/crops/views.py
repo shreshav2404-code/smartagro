@@ -14,6 +14,7 @@ import io
 import mimetypes
 from django.views.decorators.http import require_GET
 import os
+from duckduckgo_search import DDGS
 
 HF_TOKEN = os.getenv("HF_TOKEN", "YOUR_HF_TOKEN")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "YOUR_GROQ_API_KEY")
@@ -208,6 +209,39 @@ def ai_models(request):
         return JsonResponse({'models': result})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+@require_GET
+def agriculture_news(request):
+    """Fetch latest agricultural news using DuckDuckGo (Free)."""
+    query = request.GET.get('query', 'latest agriculture news India')
+    try:
+        results = []
+        with DDGS() as ddgs:
+            for r in ddgs.news(query, max_results=6):
+                results.append({
+                    'title': r.get('title'),
+                    'url': r.get('url'),
+                    'source': r.get('source'),
+                    'date': r.get('date'),
+                    'body': r.get('body'),
+                    'image': r.get('image')
+                })
+        
+        # Fallback to text search if news is empty
+        if not results:
+            with DDGS() as ddgs:
+                for r in ddgs.text(query, max_results=6):
+                    results.append({
+                        'title': r.get('title'),
+                        'url': r.get('href'),
+                        'source': 'Web',
+                        'body': r.get('body')
+                    })
+                    
+        return JsonResponse({'status': 'success', 'news': results})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 @csrf_exempt
 @require_POST
