@@ -38,6 +38,8 @@ def hf_chat(message, system_prompt="You are an agricultural expert assistant. He
             "temperature": 0.7
         }
         resp = hf_requests.post(url, json=payload, headers=headers, timeout=30)
+        if resp.status_code == 402:
+            raise Exception("Payment Required on HF")
         resp.raise_for_status()
         return resp.json()["choices"][0]["message"]["content"]
     except Exception as e:
@@ -219,6 +221,8 @@ def ai_assistant(request):
         # Fallback to Gemini if needed
         try:
             reply = hf_chat(user_message)
+            if "I apologize, I encountered an error" in reply:
+                raise Exception(reply)
             return JsonResponse({'reply': reply}, status=200)
         except Exception:
             api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''

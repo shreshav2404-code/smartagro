@@ -36,3 +36,4 @@ gunicorn
 uvicorn
 whitenoise
 psycopg2-binary
+setuptools
