@@ -33,6 +33,7 @@ tzlocal==5.3.1
 # AI SDKs (keep in sync with runtime)
 google-generativeai>=0.5.0
 groq>=0.4.2
+openai>=1.0.0
 gunicorn
 uvicorn
 whitenoise

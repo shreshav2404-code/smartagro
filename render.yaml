@@ -25,3 +25,7 @@ services:
         value: YOUR_GEMINI_API_KEY
       - key: GROQ_API_KEY
         value: YOUR_GROQ_API_KEY
+      - key: AZURE_OPENAI_ENDPOINT
+        value: https://keshuai.services.ai.azure.com/
+      - key: AZURE_OPENAI_KEY
+        value: ATJ3QNVGVjPpXWUsKAG2k4vCcXicCdREL06DLnZtoLuVAMHHuljQJQQJ99CBACGhslBXJ3w3AAAAACOGp9WK

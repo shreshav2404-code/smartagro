@@ -19,47 +19,76 @@ from django.views.decorators.http import require_GET
 import os
 import requests as hf_requests
 import groq
+from openai import AzureOpenAI
 
 HF_TOKEN = os.getenv("HF_TOKEN", "YOUR_HF_TOKEN")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "YOUR_GROQ_API_KEY")
+AZURE_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT", "https://keshuai.services.ai.azure.com/")
+AZURE_KEY = os.getenv("AZURE_OPENAI_KEY", "ATJ3QNVGVjPpXWUsKAG2k4vCcXicCdREL06DLnZtoLuVAMHHuljQJQQJ99CBACGhslBXJ3w3AAAAACOGp9WK")
 
-def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
-    """Use Groq (Llama 3) as the primary fast provider, with HF as fallback."""
+def azure_chat(message, system_prompt):
+    """Use Azure OpenAI (GPT-4o/o1) as the premium provider."""
     try:
-        # Try Groq first - it's incredibly fast and has a generous free tier
-        client = groq.Groq(api_key=GROQ_API_KEY)
+        client = AzureOpenAI(
+            azure_endpoint=AZURE_ENDPOINT,
+            api_key=AZURE_KEY,
+            api_version="2024-02-15-preview"
+        )
+        # We assume a deployment name 'gpt-4o' or 'gpt-35-turbo'. 
+        # Since deployment names vary, we'll try 'gpt-4o' as a common default.
         completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="gpt-4o", 
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": message}
             ],
-            max_tokens=512,
-            temperature=0.7
+            max_tokens=512
         )
         return completion.choices[0].message.content
-    except Exception as groq_err:
-        # Fallback to HF if Groq fails
+    except Exception as e:
+        raise e
+
+def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
+    """Multi-provider chat logic: Azure -> Groq -> HF."""
+    # Try Azure first for premium quality
+    try:
+        return azure_chat(message, system_prompt)
+    except Exception as azure_err:
+        # Fallback to Groq for speed/free tier
         try:
-            url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
-            headers = {
-                "Authorization": f"Bearer {HF_TOKEN}",
-                "Content-Type": "application/json"
-            }
-            payload = {
-                "model": "meta-llama/Llama-3.1-70B-Instruct",
-                "messages": [
+            client = groq.Groq(api_key=GROQ_API_KEY)
+            completion = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": message}
                 ],
-                "max_tokens": 512,
-                "temperature": 0.7
-            }
-            resp = hf_requests.post(url, json=payload, headers=headers, timeout=30)
-            resp.raise_for_status()
-            return resp.json()["choices"][0]["message"]["content"]
-        except Exception as e:
-            return f"I apologize, I encountered an error: {str(e)}"
+                max_tokens=512,
+                temperature=0.7
+            )
+            return completion.choices[0].message.content
+        except Exception as groq_err:
+            # Final fallback to HF
+            try:
+                url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
+                headers = {
+                    "Authorization": f"Bearer {HF_TOKEN}",
+                    "Content-Type": "application/json"
+                }
+                payload = {
+                    "model": "meta-llama/Llama-3.1-70B-Instruct",
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": message}
+                    ],
+                    "max_tokens": 512,
+                    "temperature": 0.7
+                }
+                resp = hf_requests.post(url, json=payload, headers=headers, timeout=30)
+                resp.raise_for_status()
+                return resp.json()["choices"][0]["message"]["content"]
+            except Exception as e:
+                return f"I apologize, I encountered an error: {str(e)}"
 
 
 def crop_list(request):
