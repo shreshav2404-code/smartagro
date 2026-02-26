@@ -27,23 +27,31 @@ AZURE_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT", "https://keshuai.services.ai
 AZURE_KEY = os.getenv("AZURE_OPENAI_KEY", "ATJ3QNVGVjPpXWUsKAG2k4vCcXicCdREL06DLnZtoLuVAMHHuljQJQQJ99CBACGhslBXJ3w3AAAAACOGp9WK")
 
 def azure_chat(message, system_prompt):
-    """Use Azure OpenAI (GPT-4o-mini) as the premium provider."""
+    """Use Azure OpenAI (gpt-35-turbo) as the premium provider."""
     try:
         client = AzureOpenAI(
             azure_endpoint=AZURE_ENDPOINT,
             api_key=AZURE_KEY,
             api_version="2024-02-15-preview"
         )
-        # Updated deployment name to match what the user is creating
-        completion = client.chat.completions.create(
-            model="gpt-4o-mini", 
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": message}
-            ],
-            max_tokens=512
-        )
-        return completion.choices[0].message.content
+        # Trying a few common older deployment names
+        try_deployments = ["gpt-4o-mini", "gpt-35-turbo", "gpt-35-turbo-16k"]
+        last_err = None
+        for dep in try_deployments:
+            try:
+                completion = client.chat.completions.create(
+                    model=dep, 
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": message}
+                    ],
+                    max_tokens=512
+                )
+                return completion.choices[0].message.content
+            except Exception as e:
+                last_err = e
+                continue
+        raise last_err or Exception("Azure deployment not found")
     except Exception as e:
         raise e
 
