@@ -1,1 +1,1 @@
-window.BACKEND_URL = 'https://shots-albert-reviewer-achieved.trycloudflare.com';
+window.BACKEND_URL = 'https://reason-tray-controls-arena.trycloudflare.com';
