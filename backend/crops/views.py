@@ -217,22 +217,25 @@ def ai_assistant(request):
         if not user_message:
             return JsonResponse({'reply': 'How can I help you with your agricultural needs?'}, status=200)
 
-        # Use HuggingFace (DeepSeek) by default for SPEED (2s vs 20s)
-        # Fallback to Gemini if needed
+    # Use HuggingFace (DeepSeek) by default for SPEED (2s vs 20s)
+    # Fallback to Gemini if needed
+    try:
+        reply = hf_chat(user_message)
+        if "I apologize, I encountered an error" in reply:
+            raise Exception(f"HF Error: {reply}")
+        return JsonResponse({'reply': reply}, status=200)
+    except Exception as e:
+        api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
+        if not api_key:
+            return JsonResponse({'reply': f"I'm having trouble connecting. (Debug: {str(e)})"}, status=200)
+        
         try:
-            reply = hf_chat(user_message)
-            if "I apologize, I encountered an error" in reply:
-                raise Exception(reply)
-            return JsonResponse({'reply': reply}, status=200)
-        except Exception:
-            api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
-            if not api_key:
-                return JsonResponse({'reply': "I'm having trouble connecting. Try again later."}, status=200)
-            
             genai.configure(api_key=api_key)
             model = genai.GenerativeModel("gemini-1.5-flash") # Direct fast model
             response = model.generate_content(user_message)
             return JsonResponse({'reply': response.text}, status=200)
+        except Exception as gen_err:
+            return JsonResponse({'reply': f"AI service currently unavailable. (Error: {str(gen_err)})"}, status=200)
 
     except Exception as e:
         return JsonResponse({'reply': 'Sorry, I could not process your request.'}, status=200)
