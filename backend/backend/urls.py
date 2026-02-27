@@ -36,7 +36,7 @@ def frontend(request):
 
 
 def health(request):
-    return JsonResponse({"status": "ok"})
+    return HttpResponse("OK", content_type="text/plain")
 
 def login_view(request):
     return render(request, 'login.html')
