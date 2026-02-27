@@ -290,14 +290,25 @@
         // Initialize News
         document.addEventListener('DOMContentLoaded', updateAgriMarquee);
 
-        // Keep-Alive Ping for Render Free Tier
-        (function keepAlive() {
-            console.log("Waking up Render backend...");
-            fetch(`${API_BASE}/health/`).catch(() => {});
-            // Ping every 10 minutes to stay awake while user is on site
+        // Advanced Multi-Path Wake-Up for Render
+        (function wakeUpSystem() {
+            const endpoints = [
+                `${API_BASE}/health/`,
+                `${API_BASE}/api/crops/`,
+                `https://smartagro-backend.onrender.com/health/`
+            ];
+            
+            console.log("System initialization: Waking up cloud infrastructure...");
+            
+            // Try all paths to ensure Render catches the signal
+            endpoints.forEach(url => {
+                fetch(url, { mode: 'no-cors' }).catch(() => {});
+            });
+
+            // Heartbeat to prevent sleep (every 5 minutes for better reliability)
             setInterval(() => {
-                fetch(`${API_BASE}/health/`).catch(() => {});
-            }, 600000);
+                fetch(`${API_BASE}/health/`, { mode: 'no-cors' }).catch(() => {});
+            }, 300000); 
         })();
 
         // Web3Forms Handling
