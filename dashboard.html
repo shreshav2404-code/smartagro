@@ -290,6 +290,16 @@
         // Initialize News
         document.addEventListener('DOMContentLoaded', updateAgriMarquee);
 
+        // Keep-Alive Ping for Render Free Tier
+        (function keepAlive() {
+            console.log("Waking up Render backend...");
+            fetch(`${API_BASE}/health/`).catch(() => {});
+            // Ping every 10 minutes to stay awake while user is on site
+            setInterval(() => {
+                fetch(`${API_BASE}/health/`).catch(() => {});
+            }, 600000);
+        })();
+
         // Web3Forms Handling
         const contactForm = document.getElementById('contact-form');
         if (contactForm) {
