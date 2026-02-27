@@ -1,1 +1,1 @@
-window.BACKEND_URL = 'https://smartagro-backend.onrender.com';
+window.BACKEND_URL = 'https://portrait-filled-talking-venue.trycloudflare.com';
