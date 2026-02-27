@@ -266,24 +266,32 @@
     <script src="/static/app.js"></script>
     <script src="/static/info_sections.js"></script>
     <script>
+        // Use full Render URL directly to avoid proxy issues in marquee
+        const NEWS_API_URL = 'https://smartagro-gyuc.onrender.com/api/news/';
+
         // Agri News Marquee Updater
         async function updateAgriMarquee() {
             const marquee = document.getElementById('news-marquee');
             try {
-                const response = await fetch(`${API_BASE}/api/news/`);
+                // Fetch directly from Render to bypass any potential Vercel routing delays
+                const response = await fetch(NEWS_API_URL);
                 const data = await response.json();
-                if (data.status === 'success' && data.news.length > 0) {
+                if (data.status === 'success' && data.news && data.news.length > 0) {
                     marquee.innerHTML = data.news.map(item => `
                         <span class="news-item">
-                            <span class="badge rounded-pill" style="background-color: #ffd700; color: #000;">LATEST</span> 
-                            <a href="${item.url}" target="_blank" style="color: white; text-decoration: none; font-weight: 500;">
+                            <span class="badge rounded-pill" style="background-color: #ffd700; color: #000; padding: 4px 8px; font-weight: bold;">LATEST</span> 
+                            <a href="${item.url}" target="_blank" style="color: white; text-decoration: none; font-weight: 500; margin-left: 5px;">
                                 ${item.title}
                             </a>
                         </span>
-                    `).join(' &nbsp; | &nbsp; ');
+                    `).join(' &nbsp; &nbsp; | &nbsp; &nbsp; ');
+                } else {
+                    // Static fallback if API is empty but reachable
+                    marquee.innerHTML = '<span class="news-item" style="color: white;">🌾 Digital Agriculture Mission scales up with 84M Farmer IDs | 🌦️ Monsoon advisory issued for Kharif crops</span>';
                 }
             } catch (err) {
                 console.error("Marquee update failed:", err);
+                marquee.innerHTML = '<span class="news-item" style="color: white;">🌾 Latest updates: India advances digital agriculture mission | Government assures farmers on trade deals</span>';
             }
         }
 
