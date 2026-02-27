@@ -1,1 +1,1 @@
-window.BACKEND_URL = 'https://islamic-limit-tip-third.trycloudflare.com';
+window.BACKEND_URL = 'https://smartagro-backend.onrender.com';
