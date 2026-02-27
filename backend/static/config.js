@@ -1,1 +1,1 @@
-window.BACKEND_URL = 'https://smartagro-backend.onrender.com';
+window.BACKEND_URL = 'https://smartagro-gyuc.onrender.com';
