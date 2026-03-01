@@ -20,7 +20,7 @@ services:
       - key: ALLOWED_HOSTS
         value: "*"
       - key: SUPABASE_DB_URL
-        value: postgresql://postgres:YOUR_DB_PASSWORD@db.dvtabjxxflpvyuarczcc.supabase.co:5432/postgres
+        value: postgresql://postgres.dvtabjxxflpvyuarczcc:@Keshav2404@aws-1-ap-south-1.pooler.supabase.com:6543/postgres
       - key: GEMINI_API_KEY
         value: ""  # Set in Render dashboard
       - key: GROQ_API_KEY
