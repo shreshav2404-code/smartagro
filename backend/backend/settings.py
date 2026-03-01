@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = [h for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h] or ['*']
 
@@ -164,6 +164,7 @@ CSRF_TRUSTED_ORIGINS = [o for o in os.getenv('CSRF_TRUSTED_ORIGINS', '').split('
     'https://greeniqkeshav.vercel.app',
     'https://smartagro-c67f4.web.app',
     'https://smartagro-c67f4.firebaseapp.com',
+    'https://smartagro-gyuc.onrender.com',
 ]
 
 # Cookie settings for cross-site usage when frontend is on different domain
