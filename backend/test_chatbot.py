@@ -2,7 +2,7 @@ import os
 import groq
 import json
 
-GROQ_API_KEY = "YOUR_GROQ_API_KEY"
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 def test_chatbot():
     print("Testing Groq (Llama 3.3 70B)...")

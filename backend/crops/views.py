@@ -16,8 +16,8 @@ from django.views.decorators.http import require_GET
 import os
 from duckduckgo_search import DDGS
 
-HF_TOKEN = os.getenv("HF_TOKEN", "YOUR_HF_TOKEN")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "YOUR_GROQ_API_KEY")
+HF_TOKEN = os.getenv("HF_TOKEN")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
     """Simplified chat logic using Groq via direct HTTP requests."""

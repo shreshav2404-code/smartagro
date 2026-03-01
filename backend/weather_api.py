@@ -2,7 +2,7 @@ import os
 import requests
 from datetime import datetime
 
-API_KEY = "YOUR_OPENWEATHERMAP_API_KEY"
+API_KEY = os.getenv("OPENWEATHERMAP_API_KEY")
 
 def get_current_weather(city):
     try:
