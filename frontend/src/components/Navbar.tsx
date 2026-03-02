@@ -118,6 +118,11 @@ export const Navbar: React.FC = () => {
                 {t('marketplace')}
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/image-analysis" onClick={() => setExpanded(false)}>
+                🔬 {t('image_analysis') || 'Image Analysis'}
+              </Link>
+            </li>
 
             {/* Auth Links */}
             {!user ? (

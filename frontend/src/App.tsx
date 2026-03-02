@@ -12,6 +12,7 @@ import { Features } from './pages/Features';
 import { FarmingTechniques } from './pages/FarmingTechniques';
 import { SoilInformation } from './pages/SoilInformation';
 import { Marketplace } from './pages/Marketplace';
+import { ImageAnalysis } from './pages/ImageAnalysis';
 import './styles/theme.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -32,6 +33,7 @@ const AppLayout: React.FC = () => {
           <Route path="/farming-techniques" element={<FarmingTechniques />} />
           <Route path="/soil-information" element={<SoilInformation />} />
           <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/image-analysis" element={<ImageAnalysis />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
