@@ -19,6 +19,7 @@ from duckduckgo_search import DDGS
 HF_TOKEN = os.getenv("HF_TOKEN")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
 
 def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
     """Simplified chat logic using Groq via direct HTTP requests."""
@@ -57,13 +58,13 @@ def hf_chat(message, system_prompt="You are an agricultural expert assistant. He
         return resp.json()["choices"][0]["message"]["content"]
     except Exception as groq_err:
         try:
-            url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
+            url = "https://api.nvapi.ai/v1/chat/completions"
             headers = {
-                "Authorization": f"Bearer {HF_TOKEN}",
+                "Authorization": f"Bearer {NVIDIA_API_KEY}",
                 "Content-Type": "application/json"
             }
             payload = {
-                "model": "meta-llama/Llama-3.1-70B-Instruct",
+                "model": "meta/llama-3.1-70b-instruct",
                 "messages": [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": message}
@@ -74,8 +75,27 @@ def hf_chat(message, system_prompt="You are an agricultural expert assistant. He
             resp = hf_requests.post(url, json=payload, headers=headers, timeout=10)
             resp.raise_for_status()
             return resp.json()["choices"][0]["message"]["content"]
-        except Exception as e:
-            return f"I apologize, I encountered an error: {str(e)}"
+        except Exception as nvidia_err:
+            try:
+                url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
+                headers = {
+                    "Authorization": f"Bearer {HF_TOKEN}",
+                    "Content-Type": "application/json"
+                }
+                payload = {
+                    "model": "meta-llama/Llama-3.1-70B-Instruct",
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": message}
+                    ],
+                    "max_tokens": 512,
+                    "temperature": 0.7
+                }
+                resp = hf_requests.post(url, json=payload, headers=headers, timeout=10)
+                resp.raise_for_status()
+                return resp.json()["choices"][0]["message"]["content"]
+            except Exception as e:
+                return f"I apologize, I encountered an error: {str(e)}"
 
 def crop_list(request):
     crops = Crop.objects.all()

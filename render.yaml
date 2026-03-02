@@ -37,6 +37,8 @@ services:
         value: YOUR_HF_TOKEN
       - key: OPENROUTER_API_KEY
         value: YOUR_OPENROUTER_API_KEY
+      - key: NVIDIA_API_KEY
+        value: YOUR_NVIDIA_API_KEY
       - key: SESSION_COOKIE_SECURE
         value: "true"
       - key: CSRF_COOKIE_SECURE
