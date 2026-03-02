@@ -22,14 +22,22 @@ services:
       - key: SUPABASE_DB_URL
         value: postgresql://postgres.dvtabjxxflpvyuarczcc:@Keshav2404@aws-1-ap-south-1.pooler.supabase.com:6543/postgres
       - key: GEMINI_API_KEY
-        value: ""  # Set in Render dashboard
+        value: YOUR_GEMINI_API_KEY
       - key: GROQ_API_KEY
-        value: ""  # Set in Render dashboard
+        value: YOUR_GROQ_API_KEY
       - key: AZURE_OPENAI_ENDPOINT
-        value: ""  # Set in Render dashboard if needed
+        value: https://keshuai.services.ai.azure.com/
       - key: AZURE_OPENAI_KEY
-        value: ""  # Set in Render dashboard if needed
+        value: ATJ3QNVGVjPpXWUsKAG2k4vCcXicCdREL06DLnZtoLuVAMHHuljQJQQJ99CBACGhslBXJ3w3AAAAACOGp9WK
       - key: OPENWEATHERMAP_API_KEY
-        value: ""  # Set in Render dashboard
+        value: YOUR_OPENWEATHERMAP_API_KEY
       - key: DJANGO_SECRET_KEY
-        value: ""  # Set in Render dashboard
+        value: YOUR_DJANGO_SECRET_KEY
+      - key: HF_TOKEN
+        value: YOUR_HF_TOKEN
+      - key: SESSION_COOKIE_SECURE
+        value: "true"
+      - key: CSRF_COOKIE_SECURE
+        value: "true"
+      - key: SESSION_COOKIE_SAMESITE
+        value: "Lax"
