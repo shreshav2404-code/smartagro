@@ -4,6 +4,7 @@ import { HeroSection } from '../components/HeroSection';
 import { WeatherWidget } from '../components/WeatherWidget';
 import { AboutSection } from '../components/AboutSection';
 import { FeaturesCards } from '../components/FeaturesCards';
+import { ContactForm } from '../components/ContactForm';
 
 export const Dashboard: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ export const Dashboard: React.FC = () => {
         </div>
         <AboutSection />
         <FeaturesCards />
+        <ContactForm />
       </div>
     </div>
   );
