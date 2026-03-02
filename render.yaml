@@ -35,6 +35,8 @@ services:
         value: YOUR_DJANGO_SECRET_KEY
       - key: HF_TOKEN
         value: YOUR_HF_TOKEN
+      - key: OPENROUTER_API_KEY
+        value: YOUR_OPENROUTER_API_KEY
       - key: SESSION_COOKIE_SECURE
         value: "true"
       - key: CSRF_COOKIE_SECURE

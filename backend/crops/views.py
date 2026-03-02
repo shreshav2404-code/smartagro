@@ -18,6 +18,7 @@ from duckduckgo_search import DDGS
 
 HF_TOKEN = os.getenv("HF_TOKEN")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 def hf_chat(message, system_prompt="You are an agricultural expert assistant. Help farmers with crop advice, pest control, soil management, and farming techniques. Be concise and practical."):
     """Simplified chat logic using Groq via direct HTTP requests."""
@@ -56,13 +57,15 @@ def hf_chat(message, system_prompt="You are an agricultural expert assistant. He
         return resp.json()["choices"][0]["message"]["content"]
     except Exception as groq_err:
         try:
-            url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
+            url = "https://openrouter.ai/api/v1/chat/completions"
             headers = {
-                "Authorization": f"Bearer {HF_TOKEN}",
-                "Content-Type": "application/json"
+                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://smartagro.com",
+                "X-Title": "SmartAgro"
             }
             payload = {
-                "model": "meta-llama/Llama-3.1-70B-Instruct",
+                "model": "mistralai/mistral-7b-instruct",
                 "messages": [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": message}
