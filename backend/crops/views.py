@@ -57,15 +57,13 @@ def hf_chat(message, system_prompt="You are an agricultural expert assistant. He
         return resp.json()["choices"][0]["message"]["content"]
     except Exception as groq_err:
         try:
-            url = "https://openrouter.ai/api/v1/chat/completions"
+            url = "https://router.huggingface.co/novita/v3/openai/chat/completions"
             headers = {
-                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-                "Content-Type": "application/json",
-                "HTTP-Referer": "https://smartagro.com",
-                "X-Title": "SmartAgro"
+                "Authorization": f"Bearer {HF_TOKEN}",
+                "Content-Type": "application/json"
             }
             payload = {
-                "model": "mistralai/mistral-7b-instruct",
+                "model": "meta-llama/Llama-3.1-70B-Instruct",
                 "messages": [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": message}
