@@ -1,7 +1,9 @@
 {
+  "name": "smartagro",
   "buildCommand": "npm run build",
   "outputDirectory": "build",
+  "installCommand": "npm install --legacy-peer-deps",
   "env": {
-    "REACT_APP_API_URL": "@smartagro_api_url"
+    "REACT_APP_API_URL": "https://smartagro-gyuc.onrender.com"
   }
 }
