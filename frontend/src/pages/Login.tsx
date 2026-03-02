@@ -68,7 +68,7 @@ export const Login: React.FC = () => {
             className="btn btn-outline-secondary w-100 mt-3"
             onClick={() => {
               login({ id: 'guest', name: 'Guest', email: 'guest@greeniq.com' });
-              navigate('/');
+              setTimeout(() => navigate('/'), 100);
             }}
           >
             👤 Continue as Guest
