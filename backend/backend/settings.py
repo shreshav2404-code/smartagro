@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = [h for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h] or ['*']
+ALLOWED_HOSTS = [h for h in os.getenv('ALLOWED_HOSTS', 'smartagro-gyuc.onrender.com,greeniqkeshav.vercel.app,smartagro-three.vercel.app').split(',') if h]
 
 
 # Application definition
@@ -157,6 +157,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
+    'https://smartagro-three.vercel.app',
     'https://greeniqkeshav.vercel.app',
 ]
 CORS_ALLOW_CREDENTIALS = True
