@@ -31,7 +31,7 @@ export const ChatWidget: React.FC = () => {
 
     try {
       const res = await dataAPI.getChat(userMsg);
-      setMessages((prev) => [...prev, { role: 'bot', text: res.message }]);
+      setMessages((prev) => [...prev, { role: 'bot', text: res.reply }]);
     } catch {
       setMessages((prev) => [...prev, { role: 'bot', text: 'Sorry, I could not process your request. Please try again.' }]);
     } finally {

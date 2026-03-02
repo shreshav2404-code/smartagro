@@ -15,7 +15,7 @@ export interface NewsItem {
 }
 
 export interface ChatResponse {
-  message: string;
+  reply: string;
 }
 
 export interface RegisterData {
@@ -118,7 +118,7 @@ export const dataAPI = {
 
   getChat: async (message: string): Promise<ChatResponse> => {
     try {
-      const res = await fetch(`${API_BASE}/api/chat/`, {
+      const res = await fetch(`${API_BASE}/api/ai_assistant/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message }),
@@ -128,7 +128,7 @@ export const dataAPI = {
     } catch (error) {
       console.error('Chat API error:', error);
       return {
-        message: 'I am currently unavailable. Please try again later.',
+        reply: 'I am currently unavailable. Please try again later.',
       };
     }
   },
