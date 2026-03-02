@@ -120,7 +120,7 @@ export const Navbar: React.FC = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/image-analysis" onClick={() => setExpanded(false)}>
-                🔬 {t('image_analysis') || 'Image Analysis'}
+                <i className="bi bi-microscope me-1"></i>{t('image_analysis') || 'Image Analysis'}
               </Link>
             </li>
 

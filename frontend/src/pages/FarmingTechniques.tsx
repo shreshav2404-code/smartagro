@@ -3,9 +3,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 const techniques = [
   {
-    id: 'crop-rotation',
-    icon: '🔄',
-    title: 'Crop Rotation',
+    id: 'crop-rotation', icon: 'bi-arrow-repeat', title: 'Crop Rotation',
     subtitle: 'Alternate crops seasonally for healthier soil',
     image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600',
     description: 'Crop rotation is the practice of growing different types of crops in the same area across seasons. It helps break pest and disease cycles, improves soil structure, and balances nutrient demands.',
@@ -14,9 +12,7 @@ const techniques = [
     crops: 'Rice → Wheat → Pulses → Mustard',
   },
   {
-    id: 'drip-irrigation',
-    icon: '💧',
-    title: 'Drip Irrigation',
+    id: 'drip-irrigation', icon: 'bi-droplet-half', title: 'Drip Irrigation',
     subtitle: 'Save up to 60% water with precision watering',
     image: 'https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=600',
     description: 'Drip irrigation delivers water directly to plant roots through a network of pipes, valves, and emitters. It minimizes water wastage through evaporation and runoff, making it ideal for water-scarce regions.',
@@ -25,9 +21,7 @@ const techniques = [
     crops: 'Tomatoes, Grapes, Sugarcane, Vegetables, Orchards',
   },
   {
-    id: 'organic-farming',
-    icon: '🌿',
-    title: 'Organic Farming',
+    id: 'organic-farming', icon: 'bi-leaf', title: 'Organic Farming',
     subtitle: 'Chemical-free farming for premium produce',
     image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=600',
     description: 'Organic farming avoids synthetic pesticides, fertilizers, and GMOs. It relies on natural processes, biodiversity, and cycles adapted to local conditions. India is the world\'s largest organic producer by number of farmers.',
@@ -36,9 +30,7 @@ const techniques = [
     crops: 'Basmati Rice, Spices, Tea, Coffee, Pulses, Millets',
   },
   {
-    id: 'precision-farming',
-    icon: '📡',
-    title: 'Precision Agriculture',
+    id: 'precision-farming', icon: 'bi-broadcast-pin', title: 'Precision Agriculture',
     subtitle: 'Use technology to farm smarter',
     image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600',
     description: 'Precision agriculture uses GPS, sensors, drones, and data analytics to optimize field-level management. It helps apply the right input, at the right place, at the right time — maximizing efficiency and minimizing waste.',
@@ -47,9 +39,7 @@ const techniques = [
     crops: 'Wheat, Cotton, Soybean, Corn — large-scale farms',
   },
   {
-    id: 'intercropping',
-    icon: '🌾',
-    title: 'Intercropping',
+    id: 'intercropping', icon: 'bi-grid-3x3', title: 'Intercropping',
     subtitle: 'Grow multiple crops together for better yields',
     image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600',
     description: 'Intercropping involves growing two or more crops simultaneously on the same field. Different crops complement each other by utilizing different soil layers, light levels, and nutrients — mimicking natural ecosystems.',
@@ -58,9 +48,7 @@ const techniques = [
     crops: 'Maize + Soybean, Sugarcane + Wheat, Cotton + Groundnut',
   },
   {
-    id: 'vermicomposting',
-    icon: '🪱',
-    title: 'Vermicomposting',
+    id: 'vermicomposting', icon: 'bi-recycle', title: 'Vermicomposting',
     subtitle: 'Turn waste into black gold fertilizer',
     image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600',
     description: 'Vermicomposting uses earthworms (typically Eisenia fetida) to convert organic waste into nutrient-rich compost. The resulting vermicompost contains 5x more nitrogen, 7x more phosphorus, and 11x more potassium than regular soil.',
@@ -69,9 +57,7 @@ const techniques = [
     crops: 'All crops — especially vegetables, fruits, and flowers',
   },
   {
-    id: 'zero-tillage',
-    icon: '🚜',
-    title: 'Zero Tillage / No-Till Farming',
+    id: 'zero-tillage', icon: 'bi-tools', title: 'Zero Tillage / No-Till Farming',
     subtitle: 'Plant directly without plowing the field',
     image: 'https://images.unsplash.com/photo-1592982537447-6f2a6a0c7c10?w=600',
     description: 'Zero tillage involves sowing seeds directly into unplowed soil from the previous harvest. It preserves soil structure, reduces erosion, saves fuel and labor, and is widely promoted in the Indo-Gangetic plains for wheat after rice.',
@@ -80,9 +66,7 @@ const techniques = [
     crops: 'Wheat (after rice), Mustard, Chickpea, Lentil',
   },
   {
-    id: 'hydroponics',
-    icon: '🧪',
-    title: 'Hydroponics',
+    id: 'hydroponics', icon: 'bi-moisture', title: 'Hydroponics',
     subtitle: 'Grow without soil using nutrient-rich water',
     image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600',
     description: 'Hydroponics grows plants in nutrient-rich water solutions without soil. It allows year-round production in controlled environments, uses 90% less water than traditional farming, and is ideal for urban and peri-urban areas.',
@@ -98,25 +82,23 @@ export const FarmingTechniques: React.FC = () => {
 
   return (
     <div className="container my-5">
-      {/* Header */}
       <div className="text-center mb-5">
-        <h1 className="display-4 fw-bold">🌾 {t('farming_techniques') || 'Farming Techniques'}</h1>
+        <h1 className="display-4 fw-bold"><i className="bi bi-gear-wide-connected me-3 text-success"></i>{t('farming_techniques') || 'Farming Techniques'}</h1>
         <p className="lead text-muted" style={{ maxWidth: '700px', margin: '0 auto' }}>
           Modern and traditional farming methods to maximize yield, conserve resources, and build sustainable agriculture.
         </p>
       </div>
 
-      {/* Quick Stats */}
       <div className="row g-3 mb-5">
         {[
-          { icon: '📊', label: 'Techniques Covered', value: '8+' },
-          { icon: '💰', label: 'Avg. Cost Savings', value: '20-40%' },
-          { icon: '🌍', label: 'Water Savings', value: 'Up to 90%' },
-          { icon: '📈', label: 'Yield Increase', value: '20-90%' },
+          { icon: 'bi-bar-chart-line', label: 'Techniques Covered', value: '8+' },
+          { icon: 'bi-piggy-bank', label: 'Avg. Cost Savings', value: '20-40%' },
+          { icon: 'bi-droplet', label: 'Water Savings', value: 'Up to 90%' },
+          { icon: 'bi-graph-up-arrow', label: 'Yield Increase', value: '20-90%' },
         ].map((s, i) => (
           <div key={i} className="col-6 col-md-3">
             <div className="card text-center p-3 h-100" style={{ borderRadius: '12px' }}>
-              <div style={{ fontSize: '28px' }}>{s.icon}</div>
+              <i className={`bi ${s.icon}`} style={{ fontSize: '28px', color: '#2e7d32' }}></i>
               <h4 className="fw-bold mb-0" style={{ color: '#2e7d32' }}>{s.value}</h4>
               <small className="text-muted">{s.label}</small>
             </div>
@@ -124,58 +106,44 @@ export const FarmingTechniques: React.FC = () => {
         ))}
       </div>
 
-      {/* Technique Cards */}
       <div className="row g-4">
         {techniques.map((tech) => (
           <div key={tech.id} className="col-md-6">
-            <div
-              className="card h-100 shadow-sm"
-              style={{ borderRadius: '16px', overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s' }}
-              onClick={() => setExpanded(expanded === tech.id ? null : tech.id)}
-            >
+            <div className="card h-100 shadow-sm" style={{ borderRadius: '16px', overflow: 'hidden', cursor: 'pointer' }}
+              onClick={() => setExpanded(expanded === tech.id ? null : tech.id)}>
               <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
-                <img
-                  src={tech.image}
-                  alt={tech.title}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                />
+                <img src={tech.image} alt={tech.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                 <div style={{
                   position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
                   background: 'linear-gradient(transparent 40%, rgba(0,0,0,0.7))',
                   display: 'flex', alignItems: 'flex-end', padding: '20px',
                 }}>
                   <div>
-                    <span style={{ fontSize: '32px' }}>{tech.icon}</span>
+                    <i className={`bi ${tech.icon} text-white`} style={{ fontSize: '28px' }}></i>
                     <h3 className="text-white mb-0 ms-2 d-inline">{tech.title}</h3>
                   </div>
                 </div>
               </div>
-
               <div className="card-body">
                 <p className="text-muted fw-semibold mb-2">{tech.subtitle}</p>
                 <p>{tech.description}</p>
-
                 {expanded === tech.id && (
                   <div className="mt-3">
-                    <h6 className="fw-bold text-success">✅ Benefits</h6>
-                    <ul className="mb-3">
-                      {tech.benefits.map((b, i) => <li key={i}>{b}</li>)}
-                    </ul>
-
-                    <h6 className="fw-bold" style={{ color: '#1565c0' }}>📋 How to Implement</h6>
-                    <ol className="mb-3">
-                      {tech.steps.map((s, i) => <li key={i}>{s}</li>)}
-                    </ol>
-
+                    <h6 className="fw-bold text-success"><i className="bi bi-check-circle me-2"></i>Benefits</h6>
+                    <ul className="mb-3">{tech.benefits.map((b, i) => <li key={i}>{b}</li>)}</ul>
+                    <h6 className="fw-bold" style={{ color: '#1565c0' }}><i className="bi bi-list-ol me-2"></i>How to Implement</h6>
+                    <ol className="mb-3">{tech.steps.map((s, i) => <li key={i}>{s}</li>)}</ol>
                     <div className="alert alert-success py-2" style={{ borderRadius: '10px' }}>
-                      <strong>🌱 Best For:</strong> {tech.crops}
+                      <strong><i className="bi bi-flower1 me-2"></i>Best For:</strong> {tech.crops}
                     </div>
                   </div>
                 )}
-
                 <div className="text-end">
-                  <small className="text-primary">{expanded === tech.id ? '▲ Show less' : '▼ Read more'}</small>
+                  <small className="text-primary">
+                    <i className={`bi ${expanded === tech.id ? 'bi-chevron-up' : 'bi-chevron-down'} me-1`}></i>
+                    {expanded === tech.id ? 'Show less' : 'Read more'}
+                  </small>
                 </div>
               </div>
             </div>
@@ -183,10 +151,9 @@ export const FarmingTechniques: React.FC = () => {
         ))}
       </div>
 
-      {/* Government Schemes */}
       <div className="card mt-5 shadow-sm" style={{ borderRadius: '16px', borderLeft: '5px solid #2e7d32' }}>
         <div className="card-body">
-          <h3>🏛️ Government Schemes for Farmers</h3>
+          <h3><i className="bi bi-building me-2"></i>Government Schemes for Farmers</h3>
           <div className="row g-3 mt-2">
             {[
               { name: 'PM-KISAN', desc: '₹6,000/year direct income support to all landholding farmers', link: 'https://pmkisan.gov.in' },
@@ -200,7 +167,7 @@ export const FarmingTechniques: React.FC = () => {
                 <div className="card h-100 p-3" style={{ borderRadius: '12px' }}>
                   <h6 className="fw-bold text-success">{s.name}</h6>
                   <p className="small mb-1">{s.desc}</p>
-                  <a href={s.link} target="_blank" rel="noreferrer" className="small">Learn more →</a>
+                  <a href={s.link} target="_blank" rel="noreferrer" className="small">Learn more <i className="bi bi-arrow-right"></i></a>
                 </div>
               </div>
             ))}

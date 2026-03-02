@@ -44,30 +44,24 @@ export const ContactForm: React.FC = () => {
                   className="col-md-5 d-flex flex-column justify-content-center text-white p-4 p-md-5"
                   style={{ background: 'linear-gradient(135deg, #1b5e20, #4caf50)' }}
                 >
-                  <h2 className="fw-bold mb-3">📬 Get In Touch</h2>
+                  <h2 className="fw-bold mb-3"><i className="bi bi-envelope-paper me-2"></i>Get In Touch</h2>
                   <p style={{ opacity: 0.9 }}>
                     Have questions about farming, need help with the platform, or want to collaborate? We'd love to hear from you!
                   </p>
                   <hr style={{ borderColor: 'rgba(255,255,255,0.3)' }} />
                   <div className="mt-3">
                     <div className="mb-3">
-                      <span style={{ fontSize: '20px' }}>📧</span>
-                      <span className="ms-2">support@smartagro.com</span>
+                      <i className="bi bi-envelope me-2"></i>
+                      <span>support@smartagro.com</span>
                     </div>
                     <div className="mb-3">
-                      <span style={{ fontSize: '20px' }}>📍</span>
-                      <span className="ms-2">India</span>
+                      <i className="bi bi-geo-alt me-2"></i>
+                      <span>India</span>
                     </div>
                     <div className="mb-3">
-                      <span style={{ fontSize: '20px' }}>⏰</span>
-                      <span className="ms-2">Mon-Sat, 9AM-6PM IST</span>
+                      <i className="bi bi-clock me-2"></i>
+                      <span>Mon-Sat, 9AM-6PM IST</span>
                     </div>
-                  </div>
-                  <div className="mt-4">
-                    <span style={{ fontSize: '24px', marginRight: '15px', cursor: 'pointer' }}>🌐</span>
-                    <span style={{ fontSize: '24px', marginRight: '15px', cursor: 'pointer' }}>📘</span>
-                    <span style={{ fontSize: '24px', marginRight: '15px', cursor: 'pointer' }}>🐦</span>
-                    <span style={{ fontSize: '24px', cursor: 'pointer' }}>📸</span>
                   </div>
                 </div>
 
@@ -78,12 +72,12 @@ export const ContactForm: React.FC = () => {
 
                   {status === 'success' && (
                     <div className="alert alert-success" style={{ borderRadius: '10px' }}>
-                      ✅ Message sent successfully! We'll get back to you soon.
+                      <i className="bi bi-check-circle me-2"></i>Message sent successfully! We'll get back to you soon.
                     </div>
                   )}
                   {status === 'error' && (
                     <div className="alert alert-danger" style={{ borderRadius: '10px' }}>
-                      ❌ Something went wrong. Please try again.
+                      <i className="bi bi-exclamation-triangle me-2"></i>Something went wrong. Please try again.
                     </div>
                   )}
 
@@ -156,7 +150,7 @@ export const ContactForm: React.FC = () => {
                               Sending...
                             </>
                           ) : (
-                            '🚀 Send Message'
+                            <><i className="bi bi-send me-2"></i>Send Message</>
                           )}
                         </button>
                       </div>
