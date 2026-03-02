@@ -64,7 +64,16 @@ export const Login: React.FC = () => {
               {loading ? 'Logging in...' : t('login_button')}
             </button>
           </form>
-          <Link to="/register">{t('new_user')}</Link>
+          <button
+            className="btn btn-outline-secondary w-100 mt-3"
+            onClick={() => {
+              login({ id: 'guest', name: 'Guest', email: 'guest@greeniq.com' });
+              navigate('/');
+            }}
+          >
+            👤 Continue as Guest
+          </button>
+          <Link to="/register" className="d-block mt-3">{t('new_user')}</Link>
         </div>
       </div>
     </div>
