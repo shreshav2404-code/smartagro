@@ -91,6 +91,21 @@ export const Footer: React.FC = () => {
               >
                 💻
               </a>
+              <a
+                href="https://www.linkedin.com/in/keshav-kumar-16060337b/"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  width: '45px', height: '45px', borderRadius: '50%',
+                  background: '#0A66C2',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: '#fff', fontSize: '20px', textDecoration: 'none',
+                  transition: 'transform 0.2s',
+                }}
+                title="LinkedIn"
+              >
+                in
+              </a>
             </div>
             <p style={{ opacity: 0.7, fontSize: '14px' }}>
               📧 support@smartagro.com<br />
