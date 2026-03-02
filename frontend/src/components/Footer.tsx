@@ -3,24 +3,25 @@ import { BsInstagram, BsTwitterX, BsGithub, BsLinkedin, BsHeartFill, BsHouseDoor
 
 export const Footer: React.FC = () => {
   const socialStyle = (bg: string) => ({
-    width: '45px', height: '45px', borderRadius: '50%', background: bg,
+    width: '42px', height: '42px', borderRadius: '50%', background: bg,
     display: 'flex' as const, alignItems: 'center' as const, justifyContent: 'center' as const,
-    color: '#fff', fontSize: '18px', textDecoration: 'none',
+    color: '#fff', fontSize: '16px', textDecoration: 'none',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
   });
 
   return (
-    <footer style={{ background: 'linear-gradient(135deg, #1a1a2e, #16213e)', color: '#fff', padding: '50px 0 20px', marginTop: '60px' }}>
+    <footer style={{ background: 'linear-gradient(135deg, #2d3748, #4a5568)', color: '#e2e8f0', padding: '48px 0 20px', marginTop: '60px' }}>
       <div className="container">
         <div className="row g-4 mb-4">
           <div className="col-md-4">
-            <h4 className="fw-bold mb-3"><BsTree className="text-success me-2" />GreenIQ</h4>
-            <p style={{ opacity: 0.8, lineHeight: '1.7' }}>
+            <h4 className="fw-bold mb-3" style={{ color: '#fff' }}><BsTree className="me-2" style={{ color: '#7bb88a' }} />GreenIQ</h4>
+            <p style={{ opacity: 0.75, lineHeight: '1.7', fontSize: '14px' }}>
               Empowering farmers with AI-driven insights, crop management tools, and a vibrant marketplace.
               Built by a farmer's son who understands the soil and the struggle.
             </p>
           </div>
           <div className="col-md-4">
-            <h5 className="fw-bold mb-3">Quick Links</h5>
+            <h5 className="fw-bold mb-3" style={{ color: '#fff' }}>Quick Links</h5>
             <ul className="list-unstyled" style={{ lineHeight: '2.2' }}>
               {[
                 { name: 'Home', href: '/', Icon: BsHouseDoor },
@@ -31,7 +32,9 @@ export const Footer: React.FC = () => {
                 { name: 'Features', href: '/features', Icon: BsStar },
               ].map((link, i) => (
                 <li key={i}>
-                  <a href={link.href} style={{ color: '#a8e6cf', textDecoration: 'none' }}>
+                  <a href={link.href} style={{ color: '#a8d5b8', textDecoration: 'none', transition: 'color 0.2s' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = '#a8d5b8'; }}>
                     <link.Icon className="me-2" />{link.name}
                   </a>
                 </li>
@@ -39,34 +42,29 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
           <div className="col-md-4">
-            <h5 className="fw-bold mb-3">Connect With Us</h5>
+            <h5 className="fw-bold mb-3" style={{ color: '#fff' }}>Connect With Us</h5>
             <div className="d-flex gap-3 mb-4">
               <a href="https://www.instagram.com/the_jha_keshav2404" target="_blank" rel="noreferrer"
-                style={socialStyle('linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)')} title="Instagram">
-                <BsInstagram />
-              </a>
-              <a href="https://x.com/jha_ji24" target="_blank" rel="noreferrer" style={socialStyle('#000')} title="X (Twitter)">
-                <BsTwitterX />
-              </a>
-              <a href="https://github.com/shreshav2404-code" target="_blank" rel="noreferrer" style={socialStyle('#333')} title="GitHub">
-                <BsGithub />
-              </a>
-              <a href="https://www.linkedin.com/in/keshav-kumar-16060337b/" target="_blank" rel="noreferrer" style={socialStyle('#0A66C2')} title="LinkedIn">
-                <BsLinkedin />
-              </a>
+                style={socialStyle('#c47a7a')} title="Instagram"><BsInstagram /></a>
+              <a href="https://x.com/jha_ji24" target="_blank" rel="noreferrer"
+                style={socialStyle('#5a6a7a')} title="X (Twitter)"><BsTwitterX /></a>
+              <a href="https://github.com/shreshav2404-code" target="_blank" rel="noreferrer"
+                style={socialStyle('#6b7c8d')} title="GitHub"><BsGithub /></a>
+              <a href="https://www.linkedin.com/in/keshav-kumar-16060337b/" target="_blank" rel="noreferrer"
+                style={socialStyle('#6b9ec2')} title="LinkedIn"><BsLinkedin /></a>
             </div>
-            <p style={{ opacity: 0.7, fontSize: '14px' }}>
+            <p style={{ opacity: 0.6, fontSize: '13px' }}>
               <BsEnvelope className="me-2" />support@smartagro.com<br />
               <BsGlobe className="me-2" />greeniqkeshav.vercel.app
             </p>
           </div>
         </div>
-        <hr style={{ borderColor: 'rgba(255,255,255,0.15)' }} />
+        <hr style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
         <div className="text-center pt-3">
-          <p className="mb-2" style={{ fontSize: '18px' }}>
-            Made with <BsHeartFill className="text-danger" /> by <strong>Keshav Jha</strong>, a farmer's son to other farmers
+          <p className="mb-2" style={{ fontSize: '16px', color: '#e2e8f0' }}>
+            Made with <BsHeartFill style={{ color: '#c47a7a' }} /> by <strong>Keshav Jha</strong>, a farmer's son to other farmers
           </p>
-          <p className="mb-0" style={{ opacity: 0.5, fontSize: '14px' }}>
+          <p className="mb-0" style={{ opacity: 0.4, fontSize: '13px' }}>
             &copy; {new Date().getFullYear()} GreenIQ. Empowering Farmers with AI.
           </p>
         </div>

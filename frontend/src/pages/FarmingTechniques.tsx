@@ -83,8 +83,8 @@ export const FarmingTechniques: React.FC = () => {
         ].map((s, i) => (
           <div key={i} className="col-6 col-md-3">
             <div className="card text-center p-3 h-100 card-lift" style={{ borderRadius: '12px' }}>
-              <s.Icon style={{ fontSize: '28px', color: '#2e7d32', margin: '0 auto' }} />
-              <h4 className="fw-bold mb-0" style={{ color: '#2e7d32' }}>{s.value}</h4>
+              <s.Icon style={{ fontSize: '28px', color: '#5a9e6f', margin: '0 auto' }} />
+              <h4 className="fw-bold mb-0" style={{ color: '#5a9e6f' }}>{s.value}</h4>
               <small className="text-muted">{s.label}</small>
             </div>
           </div>
@@ -119,7 +119,7 @@ export const FarmingTechniques: React.FC = () => {
                     <div className="mt-3">
                       <h6 className="fw-bold text-success"><BsCheckCircle className="me-2" />Benefits</h6>
                       <ul className="mb-3">{tech.benefits.map((b, i) => <li key={i}>{b}</li>)}</ul>
-                      <h6 className="fw-bold" style={{ color: '#1565c0' }}><BsListOl className="me-2" />How to Implement</h6>
+                      <h6 className="fw-bold" style={{ color: '#6b9ec2' }}><BsListOl className="me-2" />How to Implement</h6>
                       <ol className="mb-3">{tech.steps.map((s, i) => <li key={i}>{s}</li>)}</ol>
                       <div className="alert alert-success py-2" style={{ borderRadius: '10px' }}>
                         <strong><BsFlower1 className="me-2" />Best For:</strong> {tech.crops}
@@ -139,7 +139,7 @@ export const FarmingTechniques: React.FC = () => {
         })}
       </div>
 
-      <div className="card mt-5 shadow-sm" style={{ borderRadius: '16px', borderLeft: '5px solid #2e7d32' }}>
+      <div className="card mt-5 shadow-sm" style={{ borderRadius: '16px', borderLeft: '5px solid #5a9e6f' }}>
         <div className="card-body">
           <h3><BsBuilding className="me-2" />Government Schemes for Farmers</h3>
           <div className="row g-3 mt-2">

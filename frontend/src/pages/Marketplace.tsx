@@ -112,14 +112,14 @@ export const Marketplace: React.FC = () => {
               <div className="card h-100 shadow-sm card-hover" style={{ borderRadius: '16px', overflow: 'hidden' }}>
                 <div className="card-body">
                   <div className="d-flex justify-content-between align-items-start mb-2">
-                    <ProductIcon style={{ fontSize: '36px', color: '#2e7d32' }} />
+                    <ProductIcon style={{ fontSize: '36px', color: '#5a9e6f' }} />
                     <span className="badge bg-success rounded-pill">
                       {product.available ? <><BsCheckCircle className="me-1" />In Stock</> : 'Sold Out'}
                     </span>
                   </div>
                   <h5 className="fw-bold">{product.name}</h5>
                   <div className="d-flex align-items-center mb-2">
-                    <span className="fs-4 fw-bold" style={{ color: '#2e7d32' }}>{product.price}</span>
+                    <span className="fs-4 fw-bold" style={{ color: '#5a9e6f' }}>{product.price}</span>
                     <span className="text-muted ms-1">{product.unit}</span>
                   </div>
                   <p className="small text-muted mb-2">{product.description.slice(0, 100)}...</p>
@@ -161,7 +161,7 @@ export const Marketplace: React.FC = () => {
         </div>
       )}
 
-      <div className="card mt-5 shadow-sm" style={{ borderRadius: '16px', borderLeft: '5px solid #2e7d32' }}>
+      <div className="card mt-5 shadow-sm" style={{ borderRadius: '16px', borderLeft: '5px solid #5a9e6f' }}>
         <div className="card-body">
           <h3><BsGlobe className="me-2" />Real Agricultural Marketplaces in India</h3>
           <p className="text-muted">Verified platforms where farmers can buy inputs and sell produce:</p>

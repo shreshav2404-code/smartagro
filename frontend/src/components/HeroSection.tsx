@@ -16,13 +16,14 @@ export const HeroSection: React.FC = () => {
           />
         </div>
         <h1 className="display-4 fw-bold gradient-text">{t('hero_title')}</h1>
-        <p className="lead text-muted" style={{ maxWidth: '600px', margin: '0 auto 1.5rem' }}>{t('hero_subtitle')}</p>
+        <p className="lead" style={{ color: '#7a8a95', maxWidth: '600px', margin: '0 auto 1.5rem' }}>{t('hero_subtitle')}</p>
         <a href="#features"
           className="btn btn-lg btn-animate"
           style={{
-            background: 'linear-gradient(135deg, #1b5e20, #4caf50)',
-            color: '#fff', border: 'none', borderRadius: '30px',
-            padding: '12px 40px', fontWeight: 'bold', fontSize: '18px',
+            background: 'linear-gradient(135deg, #5a9e6f, #7bb88a)',
+            color: '#fff', border: 'none', borderRadius: '25px',
+            padding: '11px 36px', fontWeight: '600', fontSize: '16px',
+            boxShadow: '0 3px 12px rgba(90, 158, 111, 0.25)',
           }}>
           {t('learn_more')}
         </a>

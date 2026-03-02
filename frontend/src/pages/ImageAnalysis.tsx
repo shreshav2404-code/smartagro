@@ -49,7 +49,7 @@ export const ImageAnalysis: React.FC = () => {
       <div className="row justify-content-center">
         <div className="col-lg-8">
           <div className="card shadow-lg" style={{ borderRadius: '16px', overflow: 'hidden' }}>
-            <div style={{ background: 'linear-gradient(135deg, #2e7d32, #4caf50)', color: '#fff', padding: '30px', textAlign: 'center' }}>
+            <div style={{ background: 'linear-gradient(135deg, #5a9e6f, #7bb88a)', color: '#fff', padding: '30px', textAlign: 'center' }}>
               <h2 className="mb-2"><FaMicroscope className="me-2" />{t('image_analysis') || 'Crop Image Analysis'}</h2>
               <p className="mb-0" style={{ opacity: 0.9 }}>Upload a photo of your crop or plant for AI-powered health analysis</p>
             </div>
@@ -64,7 +64,7 @@ export const ImageAnalysis: React.FC = () => {
                   <img src={preview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '8px', objectFit: 'contain' }} />
                 ) : (
                   <>
-                    <BsCloudArrowUp style={{ fontSize: '48px', color: '#4caf50' }} />
+                    <BsCloudArrowUp style={{ fontSize: '48px', color: '#7bb88a' }} />
                     <h5 className="mt-3">Drag & drop your crop image here</h5>
                     <p className="text-muted">or click to browse files</p>
                     <p className="text-muted small">Supports: JPG, PNG, WEBP</p>
@@ -82,7 +82,7 @@ export const ImageAnalysis: React.FC = () => {
               {image && (
                 <div className="d-flex gap-3 mt-4">
                   <button className="btn btn-success btn-lg flex-grow-1" onClick={handleAnalyze} disabled={loading}
-                    style={{ background: 'linear-gradient(135deg, #2e7d32, #4caf50)', border: 'none', borderRadius: '10px' }}>
+                    style={{ background: 'linear-gradient(135deg, #5a9e6f, #7bb88a)', border: 'none', borderRadius: '10px' }}>
                     {loading ? (<><span className="spinner-border spinner-border-sm me-2"></span>Analyzing...</>)
                       : (<><BsSearch className="me-2" />Analyze Crop</>)}
                   </button>
@@ -99,7 +99,7 @@ export const ImageAnalysis: React.FC = () => {
               {result && (
                 <div className="mt-4">
                   <h4 className="mb-3"><BsClipboardData className="me-2" />Analysis Results</h4>
-                  <div className="card" style={{ borderRadius: '12px', borderLeft: '5px solid #4caf50', background: 'var(--card-bg, #f8f9fa)' }}>
+                  <div className="card" style={{ borderRadius: '12px', borderLeft: '5px solid #7bb88a', background: 'var(--card-bg, #f8f9fa)' }}>
                     <div className="card-body">
                       <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.7' }}>{result}</div>
                     </div>
@@ -114,7 +114,7 @@ export const ImageAnalysis: React.FC = () => {
                 ].map((item, i) => (
                   <div key={i} className="col-md-4">
                     <div className="card h-100 text-center p-3" style={{ borderRadius: '12px' }}>
-                      <item.Icon style={{ fontSize: '32px', color: '#2e7d32', margin: '0 auto' }} />
+                      <item.Icon style={{ fontSize: '32px', color: '#5a9e6f', margin: '0 auto' }} />
                       <h6 className="mt-2">{item.title}</h6>
                       <p className="small text-muted mb-0">{item.desc}</p>
                     </div>

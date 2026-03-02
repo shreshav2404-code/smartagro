@@ -69,14 +69,14 @@ export const SoilInformation: React.FC = () => {
       </div>
 
       <div className="card shadow-sm mb-5" style={{ borderRadius: '16px', overflow: 'hidden' }}>
-        <div style={{ background: 'linear-gradient(135deg, #5D4037, #795548)', padding: '25px', color: '#fff' }}>
+        <div style={{ background: 'linear-gradient(135deg, #8a7a6a, #a09080)', padding: '25px', color: '#fff' }}>
           <h3 className="mb-0"><BsClipboard2Pulse className="me-2" />Soil Testing Parameters — Know Your Numbers</h3>
         </div>
         <div className="card-body">
           <div className="row g-3">
             {soilTests.map((test, i) => (
               <div key={i} className="col-md-4">
-                <div className="card h-100 p-3" style={{ borderRadius: '12px', borderLeft: '4px solid #795548' }}>
+                <div className="card h-100 p-3" style={{ borderRadius: '12px', borderLeft: '4px solid #a09080' }}>
                   <h6 className="fw-bold"><BsThermometerHalf className="me-2" />{test.param}</h6>
                   <p className="small mb-1">{test.desc}</p>
                   <span className="badge bg-success">Ideal: {test.ideal}</span>
@@ -115,7 +115,7 @@ export const SoilInformation: React.FC = () => {
                       <ul className="small mb-3">{soil.characteristics.map((c, i) => <li key={i}>{c}</li>)}</ul>
                       <h6 className="fw-bold text-success"><BsFlower1 className="me-2" />Suitable Crops</h6>
                       <div className="mb-3">{soil.crops.map((c, i) => <span key={i} className="badge bg-success me-1 mb-1">{c}</span>)}</div>
-                      <h6 className="fw-bold" style={{ color: '#1565c0' }}><BsWrench className="me-2" />Management Tips</h6>
+                      <h6 className="fw-bold" style={{ color: '#6b9ec2' }}><BsWrench className="me-2" />Management Tips</h6>
                       <ul className="small mb-0">{soil.management.map((m, i) => <li key={i}>{m}</li>)}</ul>
                     </div>
                   )}
@@ -132,7 +132,7 @@ export const SoilInformation: React.FC = () => {
         })}
       </div>
 
-      <div className="card mt-5 shadow-sm" style={{ borderRadius: '16px', borderLeft: '5px solid #2e7d32' }}>
+      <div className="card mt-5 shadow-sm" style={{ borderRadius: '16px', borderLeft: '5px solid #5a9e6f' }}>
         <div className="card-body">
           <h3><BsTree className="me-2" />5 Golden Rules of Soil Health</h3>
           <div className="row g-3 mt-2">
@@ -145,7 +145,7 @@ export const SoilInformation: React.FC = () => {
             ].map((r) => (
               <div key={r.num} className="col-md-4 col-lg">
                 <div className="card h-100 text-center p-3" style={{ borderRadius: '12px' }}>
-                  <div className="fw-bold fs-3" style={{ color: '#2e7d32' }}>{r.num}</div>
+                  <div className="fw-bold fs-3" style={{ color: '#5a9e6f' }}>{r.num}</div>
                   <h6 className="fw-bold">{r.title}</h6>
                   <p className="small text-muted mb-0">{r.desc}</p>
                 </div>
