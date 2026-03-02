@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getWeather, getAirQuality } from '../services/api';
+import { getAirQuality } from '../services/api';
 import '../styles/WeatherWidget.css';
 
 function WeatherWidget({ weather, onCityChange }: { weather: any; onCityChange: (city: string) => void }) {
