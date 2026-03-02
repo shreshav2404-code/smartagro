@@ -42,7 +42,7 @@ export interface UserData {
 // Auth APIs
 export const authAPI = {
   register: async (data: RegisterData): Promise<UserData> => {
-    const res = await fetch(`${API_BASE}/api/register`, {
+    const res = await fetch(`${API_BASE}/api/register/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -52,7 +52,7 @@ export const authAPI = {
   },
 
   login: async (data: LoginData): Promise<UserData> => {
-    const res = await fetch(`${API_BASE}/api/login`, {
+    const res = await fetch(`${API_BASE}/api/login/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -66,9 +66,17 @@ export const authAPI = {
 export const dataAPI = {
   getWeather: async (city: string): Promise<WeatherData> => {
     try {
-      const res = await fetch(`${API_BASE}/api/weather?city=${encodeURIComponent(city)}`);
+      const res = await fetch(`${API_BASE}/api/weather/?city=${encodeURIComponent(city)}`);
       if (!res.ok) throw new Error('Weather fetch failed');
-      return res.json();
+      const data = await res.json();
+      // Map backend response to our interface
+      return {
+        temperature: data.temperature?.current ?? data.temperature ?? 28,
+        humidity: data.humidity ?? 65,
+        wind_speed: data.wind?.speed ?? data.wind_speed ?? 12,
+        aqi: data.aqi ?? 75,
+        city: data.location ?? city,
+      };
     } catch (error) {
       console.error('Weather API error:', error);
       // Fallback weather data
@@ -84,9 +92,12 @@ export const dataAPI = {
 
   getNews: async (): Promise<NewsItem[]> => {
     try {
-      const res = await fetch(`${API_BASE}/api/news`);
+      const res = await fetch(`${API_BASE}/api/news/`);
       if (!res.ok) throw new Error('News fetch failed');
-      return res.json();
+      const data = await res.json();
+      // Backend returns {status, news: [{title, source, ...}]}
+      const items = data.news || data;
+      return Array.isArray(items) ? items : [];
     } catch (error) {
       console.error('News API error:', error);
       // Fallback news data
@@ -107,7 +118,7 @@ export const dataAPI = {
 
   getChat: async (message: string): Promise<ChatResponse> => {
     try {
-      const res = await fetch(`${API_BASE}/api/chat`, {
+      const res = await fetch(`${API_BASE}/api/chat/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message }),
@@ -124,7 +135,7 @@ export const dataAPI = {
 
   getMarketplace: async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/market`);
+      const res = await fetch(`${API_BASE}/api/market/`);
       if (!res.ok) throw new Error('Marketplace fetch failed');
       return res.json();
     } catch (error) {
@@ -135,7 +146,7 @@ export const dataAPI = {
 
   getSoilInfo: async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/soil`);
+      const res = await fetch(`${API_BASE}/api/soil/`);
       if (!res.ok) throw new Error('Soil info fetch failed');
       return res.json();
     } catch (error) {
