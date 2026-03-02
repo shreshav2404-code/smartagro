@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import './styles/animations.css';
 import { Navbar } from './components/Navbar';
 import { ChatWidget } from './components/ChatWidget';
 import { Footer } from './components/Footer';

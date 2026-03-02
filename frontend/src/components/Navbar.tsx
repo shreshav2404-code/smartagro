@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { BsGlobe, BsPalette, BsSun, BsMoon, BsStars, BsPersonCircle } from 'react-icons/bs';
+import { FaMicroscope } from 'react-icons/fa';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -39,7 +41,7 @@ export const Navbar: React.FC = () => {
                 data-bs-toggle="dropdown"
                 style={{ border: 'none', background: 'none' }}
               >
-                🌐 {t('language_selector')}
+                <BsGlobe className="me-1" /> {t('language_selector')}
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
                 {(['en', 'es', 'fr', 'hi', 'ta', 'mai'] as const).map((lang) => (
@@ -64,34 +66,28 @@ export const Navbar: React.FC = () => {
                 data-bs-toggle="dropdown"
                 style={{ border: 'none', background: 'none' }}
               >
-                🎨 {theme === 'light' ? '☀️' : theme === 'dark' ? '🌙' : '✨'} Theme
+                <BsPalette className="me-1" /> {theme === 'light' ? <BsSun /> : theme === 'dark' ? <BsMoon /> : <BsStars />} Theme
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
                 <li>
-                  <button
-                    className={`dropdown-item ${theme === 'light' ? 'active' : ''}`}
+                  <button className={`dropdown-item ${theme === 'light' ? 'active' : ''}`}
                     onClick={() => changeTheme('light')}
-                    style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
-                  >
-                    ☀️ Light Mode
+                    style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}>
+                    <BsSun className="me-2" />Light Mode
                   </button>
                 </li>
                 <li>
-                  <button
-                    className={`dropdown-item ${theme === 'dark' ? 'active' : ''}`}
+                  <button className={`dropdown-item ${theme === 'dark' ? 'active' : ''}`}
                     onClick={() => changeTheme('dark')}
-                    style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
-                  >
-                    🌙 Dark Mode
+                    style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}>
+                    <BsMoon className="me-2" />Dark Mode
                   </button>
                 </li>
                 <li>
-                  <button
-                    className={`dropdown-item ${theme === 'nightLight' ? 'active' : ''}`}
+                  <button className={`dropdown-item ${theme === 'nightLight' ? 'active' : ''}`}
                     onClick={() => changeTheme('nightLight')}
-                    style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
-                  >
-                    ✨ Night Light Mode
+                    style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}>
+                    <BsStars className="me-2" />Night Light Mode
                   </button>
                 </li>
               </ul>
@@ -120,7 +116,7 @@ export const Navbar: React.FC = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/image-analysis" onClick={() => setExpanded(false)}>
-                <i className="bi bi-microscope me-1"></i>{t('image_analysis') || 'Image Analysis'}
+                <FaMicroscope className="me-1" />{t('image_analysis') || 'Image Analysis'}
               </Link>
             </li>
 
@@ -146,26 +142,19 @@ export const Navbar: React.FC = () => {
                   data-bs-toggle="dropdown"
                   style={{ border: 'none', background: 'none' }}
                 >
-                  👤 {user.name}
+                  <BsPersonCircle className="me-1" /> {user.name}
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end">
                   <li>
-                    <button
-                      className="dropdown-item"
-                      style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
-                    >
+                    <button className="dropdown-item"
+                      style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}>
                       {t('profile')}
                     </button>
                   </li>
+                  <li><hr className="dropdown-divider" /></li>
                   <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={handleLogout}
-                      style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
-                    >
+                    <button className="dropdown-item" onClick={handleLogout}
+                      style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}>
                       {t('logout')}
                     </button>
                   </li>

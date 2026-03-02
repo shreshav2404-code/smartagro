@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { authAPI } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
+import { BsTree, BsPersonCircle } from 'react-icons/bs';
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +33,7 @@ export const Login: React.FC = () => {
   return (
     <div className="login-split">
       <div className="login-sidebar">
-        <h1>🌱 GreenIQ</h1>
+        <h1><BsTree className="me-2" />GreenIQ</h1>
         <p>{t('hero_subtitle')}</p>
       </div>
       <div className="login-content">
@@ -71,7 +72,7 @@ export const Login: React.FC = () => {
               setTimeout(() => navigate('/'), 100);
             }}
           >
-            👤 Continue as Guest
+            <BsPersonCircle className="me-2" />Continue as Guest
           </button>
           <Link to="/register" className="d-block mt-3">{t('new_user')}</Link>
         </div>

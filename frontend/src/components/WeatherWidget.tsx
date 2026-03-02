@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { dataAPI, WeatherData } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
+import { BsCloudSun } from 'react-icons/bs';
 
 export const WeatherWidget: React.FC = () => {
   const [city, setCity] = useState('Delhi');
@@ -40,7 +41,7 @@ export const WeatherWidget: React.FC = () => {
 
   return (
     <div className="weather-widget">
-      <h3 className="mb-4">🌤️ {t('weather')}</h3>
+      <h3 className="mb-4"><BsCloudSun className="me-2" />{t('weather')}</h3>
       
       <form onSubmit={handleSearch} className="mb-4">
         <div className="input-group">

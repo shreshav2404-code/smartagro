@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { BsCloudArrowUp, BsChatLeftText, BsSearch, BsTrash, BsExclamationTriangle, BsClipboardData, BsVirus, BsBug, BsDropletHalf } from 'react-icons/bs';
+import { FaMicroscope } from 'react-icons/fa';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
@@ -17,13 +19,11 @@ export const ImageAnalysis: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) { setImage(file); setPreview(URL.createObjectURL(file)); setResult(null); setError(null); }
   };
-
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
     if (file && file.type.startsWith('image/')) { setImage(file); setPreview(URL.createObjectURL(file)); setResult(null); setError(null); }
   };
-
   const handleAnalyze = async () => {
     if (!image) return;
     setLoading(true); setError(null); setResult(null);
@@ -36,10 +36,9 @@ export const ImageAnalysis: React.FC = () => {
       if (data.reply) setResult(data.reply);
       else if (data.error) setError(data.error);
       else setError('Unexpected response from server');
-    } catch (err) { setError('Failed to analyze image. Please try again.'); }
+    } catch { setError('Failed to analyze image. Please try again.'); }
     finally { setLoading(false); }
   };
-
   const handleClear = () => {
     setImage(null); setPreview(null); setResult(null); setError(null); setMessage('');
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -51,27 +50,21 @@ export const ImageAnalysis: React.FC = () => {
         <div className="col-lg-8">
           <div className="card shadow-lg" style={{ borderRadius: '16px', overflow: 'hidden' }}>
             <div style={{ background: 'linear-gradient(135deg, #2e7d32, #4caf50)', color: '#fff', padding: '30px', textAlign: 'center' }}>
-              <h2 className="mb-2"><i className="bi bi-microscope me-2"></i>{t('image_analysis') || 'Crop Image Analysis'}</h2>
+              <h2 className="mb-2"><FaMicroscope className="me-2" />{t('image_analysis') || 'Crop Image Analysis'}</h2>
               <p className="mb-0" style={{ opacity: 0.9 }}>Upload a photo of your crop or plant for AI-powered health analysis</p>
             </div>
-
             <div className="card-body p-4">
-              <div
-                onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}
-                onClick={() => fileInputRef.current?.click()}
+              <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()} onClick={() => fileInputRef.current?.click()}
                 style={{
-                  border: '3px dashed var(--border-color, #ccc)', borderRadius: '12px',
-                  padding: '40px 20px', textAlign: 'center', cursor: 'pointer',
-                  background: preview ? 'transparent' : 'var(--card-bg, #fafafa)',
-                  position: 'relative', minHeight: '200px',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
-                }}
-              >
+                  border: '3px dashed var(--border-color, #ccc)', borderRadius: '12px', padding: '40px 20px',
+                  textAlign: 'center', cursor: 'pointer', background: preview ? 'transparent' : 'var(--card-bg, #fafafa)',
+                  position: 'relative', minHeight: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
+                }}>
                 {preview ? (
                   <img src={preview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '8px', objectFit: 'contain' }} />
                 ) : (
                   <>
-                    <i className="bi bi-cloud-arrow-up" style={{ fontSize: '48px', color: '#4caf50' }}></i>
+                    <BsCloudArrowUp style={{ fontSize: '48px', color: '#4caf50' }} />
                     <h5 className="mt-3">Drag & drop your crop image here</h5>
                     <p className="text-muted">or click to browse files</p>
                     <p className="text-muted small">Supports: JPG, PNG, WEBP</p>
@@ -79,37 +72,33 @@ export const ImageAnalysis: React.FC = () => {
                 )}
                 <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
               </div>
-
               {image && (
                 <div className="mt-3">
-                  <label className="form-label fw-bold"><i className="bi bi-chat-left-text me-2"></i>Describe your concern (optional)</label>
+                  <label className="form-label fw-bold"><BsChatLeftText className="me-2" />Describe your concern (optional)</label>
                   <input type="text" className="form-control" placeholder="e.g., Yellow spots on leaves, wilting stems..."
                     value={message} onChange={(e) => setMessage(e.target.value)} />
                 </div>
               )}
-
               {image && (
                 <div className="d-flex gap-3 mt-4">
                   <button className="btn btn-success btn-lg flex-grow-1" onClick={handleAnalyze} disabled={loading}
                     style={{ background: 'linear-gradient(135deg, #2e7d32, #4caf50)', border: 'none', borderRadius: '10px' }}>
                     {loading ? (<><span className="spinner-border spinner-border-sm me-2"></span>Analyzing...</>)
-                      : (<><i className="bi bi-search me-2"></i>Analyze Crop</>)}
+                      : (<><BsSearch className="me-2" />Analyze Crop</>)}
                   </button>
                   <button className="btn btn-outline-secondary btn-lg" onClick={handleClear} style={{ borderRadius: '10px' }}>
-                    <i className="bi bi-trash me-1"></i>Clear
+                    <BsTrash className="me-1" />Clear
                   </button>
                 </div>
               )}
-
               {error && (
                 <div className="alert alert-danger mt-4" style={{ borderRadius: '10px' }}>
-                  <i className="bi bi-exclamation-triangle me-2"></i>{error}
+                  <BsExclamationTriangle className="me-2" />{error}
                 </div>
               )}
-
               {result && (
                 <div className="mt-4">
-                  <h4 className="mb-3"><i className="bi bi-clipboard-data me-2"></i>Analysis Results</h4>
+                  <h4 className="mb-3"><BsClipboardData className="me-2" />Analysis Results</h4>
                   <div className="card" style={{ borderRadius: '12px', borderLeft: '5px solid #4caf50', background: 'var(--card-bg, #f8f9fa)' }}>
                     <div className="card-body">
                       <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.7' }}>{result}</div>
@@ -117,16 +106,15 @@ export const ImageAnalysis: React.FC = () => {
                   </div>
                 </div>
               )}
-
               <div className="row mt-5 g-3">
                 {[
-                  { icon: 'bi-virus', title: 'Disease Detection', desc: 'Identify plant diseases from leaf patterns' },
-                  { icon: 'bi-bug', title: 'Pest Identification', desc: 'Detect pest damage and suggest treatments' },
-                  { icon: 'bi-droplet-half', title: 'Nutrient Analysis', desc: 'Assess nutrient deficiencies visually' },
+                  { Icon: BsVirus, title: 'Disease Detection', desc: 'Identify plant diseases from leaf patterns' },
+                  { Icon: BsBug, title: 'Pest Identification', desc: 'Detect pest damage and suggest treatments' },
+                  { Icon: BsDropletHalf, title: 'Nutrient Analysis', desc: 'Assess nutrient deficiencies visually' },
                 ].map((item, i) => (
                   <div key={i} className="col-md-4">
                     <div className="card h-100 text-center p-3" style={{ borderRadius: '12px' }}>
-                      <i className={`bi ${item.icon}`} style={{ fontSize: '32px', color: '#2e7d32' }}></i>
+                      <item.Icon style={{ fontSize: '32px', color: '#2e7d32', margin: '0 auto' }} />
                       <h6 className="mt-2">{item.title}</h6>
                       <p className="small text-muted mb-0">{item.desc}</p>
                     </div>

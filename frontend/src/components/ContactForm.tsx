@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BsEnvelopePaper, BsEnvelope, BsGeoAlt, BsClock, BsCheckCircle, BsExclamationTriangle, BsSend } from 'react-icons/bs';
 
 const WEB3FORMS_KEY = 'a2662afb-f8c3-4bb7-b27f-b8c532568e00';
 
@@ -11,25 +12,13 @@ export const ContactForm: React.FC = () => {
     setStatus('sending');
     try {
       const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          ...form,
-          from_name: 'SmartAgro Contact Form',
-        }),
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ access_key: WEB3FORMS_KEY, ...form, from_name: 'SmartAgro Contact Form' }),
       });
       const data = await res.json();
-      if (data.success) {
-        setStatus('success');
-        setForm({ name: '', email: '', subject: '', message: '' });
-        setTimeout(() => setStatus('idle'), 5000);
-      } else {
-        setStatus('error');
-      }
-    } catch {
-      setStatus('error');
-    }
+      if (data.success) { setStatus('success'); setForm({ name: '', email: '', subject: '', message: '' }); setTimeout(() => setStatus('idle'), 5000); }
+      else setStatus('error');
+    } catch { setStatus('error'); }
   };
 
   return (
@@ -39,119 +28,57 @@ export const ContactForm: React.FC = () => {
           <div className="col-lg-10">
             <div className="card shadow-lg" style={{ borderRadius: '20px', overflow: 'hidden' }}>
               <div className="row g-0">
-                {/* Left Info Panel */}
-                <div
-                  className="col-md-5 d-flex flex-column justify-content-center text-white p-4 p-md-5"
-                  style={{ background: 'linear-gradient(135deg, #1b5e20, #4caf50)' }}
-                >
-                  <h2 className="fw-bold mb-3"><i className="bi bi-envelope-paper me-2"></i>Get In Touch</h2>
-                  <p style={{ opacity: 0.9 }}>
-                    Have questions about farming, need help with the platform, or want to collaborate? We'd love to hear from you!
-                  </p>
+                <div className="col-md-5 d-flex flex-column justify-content-center text-white p-4 p-md-5"
+                  style={{ background: 'linear-gradient(135deg, #1b5e20, #4caf50)' }}>
+                  <h2 className="fw-bold mb-3"><BsEnvelopePaper className="me-2" />Get In Touch</h2>
+                  <p style={{ opacity: 0.9 }}>Have questions about farming, need help with the platform, or want to collaborate? We'd love to hear from you!</p>
                   <hr style={{ borderColor: 'rgba(255,255,255,0.3)' }} />
                   <div className="mt-3">
-                    <div className="mb-3">
-                      <i className="bi bi-envelope me-2"></i>
-                      <span>support@smartagro.com</span>
-                    </div>
-                    <div className="mb-3">
-                      <i className="bi bi-geo-alt me-2"></i>
-                      <span>India</span>
-                    </div>
-                    <div className="mb-3">
-                      <i className="bi bi-clock me-2"></i>
-                      <span>Mon-Sat, 9AM-6PM IST</span>
-                    </div>
+                    <div className="mb-3"><BsEnvelope className="me-2" /><span>support@smartagro.com</span></div>
+                    <div className="mb-3"><BsGeoAlt className="me-2" /><span>India</span></div>
+                    <div className="mb-3"><BsClock className="me-2" /><span>Mon-Sat, 9AM-6PM IST</span></div>
                   </div>
                 </div>
-
-                {/* Right Form */}
                 <div className="col-md-7 p-4 p-md-5">
                   <h3 className="fw-bold mb-1">Send us a Message</h3>
                   <p className="text-muted mb-4">We'll get back to you within 24 hours.</p>
-
                   {status === 'success' && (
                     <div className="alert alert-success" style={{ borderRadius: '10px' }}>
-                      <i className="bi bi-check-circle me-2"></i>Message sent successfully! We'll get back to you soon.
+                      <BsCheckCircle className="me-2" />Message sent successfully! We'll get back to you soon.
                     </div>
                   )}
                   {status === 'error' && (
                     <div className="alert alert-danger" style={{ borderRadius: '10px' }}>
-                      <i className="bi bi-exclamation-triangle me-2"></i>Something went wrong. Please try again.
+                      <BsExclamationTriangle className="me-2" />Something went wrong. Please try again.
                     </div>
                   )}
-
                   <form onSubmit={handleSubmit}>
                     <div className="row g-3">
                       <div className="col-md-6">
                         <label className="form-label fw-semibold">Your Name</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="John Doe"
-                          value={form.name}
-                          onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          required
-                          style={{ borderRadius: '10px', padding: '12px' }}
-                        />
+                        <input type="text" className="form-control" placeholder="John Doe" value={form.name}
+                          onChange={(e) => setForm({ ...form, name: e.target.value })} required style={{ borderRadius: '10px', padding: '12px' }} />
                       </div>
                       <div className="col-md-6">
                         <label className="form-label fw-semibold">Email Address</label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          placeholder="john@example.com"
-                          value={form.email}
-                          onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          required
-                          style={{ borderRadius: '10px', padding: '12px' }}
-                        />
+                        <input type="email" className="form-control" placeholder="john@example.com" value={form.email}
+                          onChange={(e) => setForm({ ...form, email: e.target.value })} required style={{ borderRadius: '10px', padding: '12px' }} />
                       </div>
                       <div className="col-12">
                         <label className="form-label fw-semibold">Subject</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="How can we help?"
-                          value={form.subject}
-                          onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                          required
-                          style={{ borderRadius: '10px', padding: '12px' }}
-                        />
+                        <input type="text" className="form-control" placeholder="How can we help?" value={form.subject}
+                          onChange={(e) => setForm({ ...form, subject: e.target.value })} required style={{ borderRadius: '10px', padding: '12px' }} />
                       </div>
                       <div className="col-12">
                         <label className="form-label fw-semibold">Message</label>
-                        <textarea
-                          className="form-control"
-                          rows={5}
-                          placeholder="Tell us more about your query..."
-                          value={form.message}
-                          onChange={(e) => setForm({ ...form, message: e.target.value })}
-                          required
-                          style={{ borderRadius: '10px', padding: '12px' }}
-                        />
+                        <textarea className="form-control" rows={5} placeholder="Tell us more about your query..." value={form.message}
+                          onChange={(e) => setForm({ ...form, message: e.target.value })} required style={{ borderRadius: '10px', padding: '12px' }} />
                       </div>
                       <div className="col-12">
-                        <button
-                          type="submit"
-                          className="btn btn-success btn-lg w-100"
-                          disabled={status === 'sending'}
-                          style={{
-                            borderRadius: '12px',
-                            background: 'linear-gradient(135deg, #2e7d32, #4caf50)',
-                            border: 'none',
-                            padding: '14px',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {status === 'sending' ? (
-                            <>
-                              <span className="spinner-border spinner-border-sm me-2"></span>
-                              Sending...
-                            </>
-                          ) : (
-                            <><i className="bi bi-send me-2"></i>Send Message</>
-                          )}
+                        <button type="submit" className="btn btn-success btn-lg w-100" disabled={status === 'sending'}
+                          style={{ borderRadius: '12px', background: 'linear-gradient(135deg, #2e7d32, #4caf50)', border: 'none', padding: '14px', fontWeight: 'bold' }}>
+                          {status === 'sending' ? (<><span className="spinner-border spinner-border-sm me-2"></span>Sending...</>)
+                            : (<><BsSend className="me-2" />Send Message</>)}
                         </button>
                       </div>
                     </div>

@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { authAPI } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
+import { BsTree } from 'react-icons/bs';
 
 export const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ export const Register: React.FC = () => {
   return (
     <div className="login-split">
       <div className="login-sidebar">
-        <h1>🌱 GreenIQ</h1>
+        <h1><BsTree className="me-2" />GreenIQ</h1>
         <p>{t('hero_subtitle')}</p>
       </div>
       <div className="login-content">
