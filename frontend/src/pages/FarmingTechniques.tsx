@@ -1,12 +1,14 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
-function FarmingTechniques({ user }: { user: any }) {
+export const FarmingTechniques: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Farming Techniques</h1>
-      <p>Coming soon...</p>
+    <div className="container my-5">
+      <h1>{t('farming_techniques')}</h1>
+      <p className="lead">Learn the best farming techniques to maximize your harvest and sustainability.</p>
+      {/* Placeholder content */}
     </div>
   );
-}
-
-export default FarmingTechniques;
+};

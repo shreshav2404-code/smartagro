@@ -1,12 +1,14 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
-function Features({ user }: { user: any }) {
+export const Features: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Features</h1>
-      <p>Coming soon...</p>
+    <div className="container my-5">
+      <h1>{t('platform_features')}</h1>
+      <p className="lead">Explore all the amazing features of GreenIQ platform designed for modern farmers.</p>
+      {/* Placeholder content */}
     </div>
   );
-}
-
-export default Features;
+};

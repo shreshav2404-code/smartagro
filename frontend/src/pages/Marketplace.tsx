@@ -1,12 +1,14 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
-function Marketplace({ user }: { user: any }) {
+export const Marketplace: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Marketplace</h1>
-      <p>Coming soon...</p>
+    <div className="container my-5">
+      <h1>{t('marketplace_title')}</h1>
+      <p className="lead">Buy and sell your agricultural products directly to consumers and businesses.</p>
+      {/* Placeholder content */}
     </div>
   );
-}
-
-export default Marketplace;
+};

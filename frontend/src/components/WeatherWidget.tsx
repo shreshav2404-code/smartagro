@@ -1,86 +1,91 @@
-import React, { useState } from 'react';
-import { getAirQuality } from '../services/api';
-import '../styles/WeatherWidget.css';
+import React, { useState, useEffect } from 'react';
+import { dataAPI, WeatherData } from '../services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
-function WeatherWidget({ weather, onCityChange }: { weather: any; onCityChange: (city: string) => void }) {
+export const WeatherWidget: React.FC = () => {
   const [city, setCity] = useState('Delhi');
-  const [aqi, setAqi] = useState<any>(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { t } = useLanguage();
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const fetchWeather = async (searchCity: string) => {
+    if (!searchCity.trim()) return;
+    
     setLoading(true);
+    setError(null);
     try {
-      onCityChange(city);
-      // For AQI, using default coordinates for now
-      const aqiData = await getAirQuality(28.6139, 77.209);
-      setAqi(aqiData);
+      const data = await dataAPI.getWeather(searchCity);
+      setWeather(data);
+      setCity(searchCity);
     } catch (err) {
-      console.error('Failed to fetch AQI:', err);
+      setError('Failed to fetch weather');
+      console.error('Weather error:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  if (!weather) {
-    return <div className="weather-widget loading">Loading weather...</div>;
-  }
+  useEffect(() => {
+    fetchWeather(city);
+  }, []);
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const searchCity = formData.get('city') as string;
+    fetchWeather(searchCity);
+  };
 
   return (
     <div className="weather-widget">
-      <h3>Weather Information</h3>
-
-      <form onSubmit={handleSearch} className="weather-search">
-        <input
-          type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          placeholder="Enter city name"
-        />
-        <button type="submit" disabled={loading}>
-          Search
-        </button>
+      <h3 className="mb-4">🌤️ {t('weather')}</h3>
+      
+      <form onSubmit={handleSearch} className="mb-4">
+        <div className="input-group">
+          <input
+            type="text"
+            name="city"
+            className="form-control"
+            placeholder={t('search_city')}
+            defaultValue={city}
+          />
+          <button className="btn btn-primary" type="submit">
+            Search
+          </button>
+        </div>
       </form>
 
-      <div className="weather-current">
-        <h4>{weather.location}</h4>
-        <div className="weather-icon">
-          <img
-            src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
-            alt={weather.description}
-          />
-        </div>
-        <div className="weather-temp">{Math.round(weather.temperature.current)}°C</div>
-        <div className="weather-desc">{weather.description}</div>
-      </div>
+      {loading && <div className="alert alert-info">Loading weather data...</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
-      <div className="weather-details">
-        <div className="detail">
-          <span className="label">Humidity</span>
-          <span className="value">{weather.humidity}%</span>
-        </div>
-        <div className="detail">
-          <span className="label">Wind</span>
-          <span className="value">{weather.wind.speed} m/s</span>
-        </div>
-        <div className="detail">
-          <span className="label">Sunrise</span>
-          <span className="value">{weather.sunrise}</span>
-        </div>
-        <div className="detail">
-          <span className="label">Sunset</span>
-          <span className="value">{weather.sunset}</span>
-        </div>
-      </div>
-
-      {aqi && (
-        <div className="aqi-info">
-          <h5>Air Quality</h5>
-          <p>{aqi.aqi_description}</p>
+      {weather && (
+        <div>
+          <h5 className="mb-3">{weather.city}</h5>
+          <div className="row">
+            <div className="col-md-6">
+              <div className="weather-item">
+                <span className="weather-label">{t('temperature')}:</span>
+                <span className="fw-bold">{weather.temperature}°C</span>
+              </div>
+              <div className="weather-item">
+                <span className="weather-label">{t('wind')}:</span>
+                <span className="fw-bold">{weather.wind_speed} km/h</span>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="weather-item">
+                <span className="weather-label">{t('humidity')}:</span>
+                <span className="fw-bold">{weather.humidity}%</span>
+              </div>
+              <div className="weather-item">
+                <span className="weather-label">{t('aqi')}:</span>
+                <span className="fw-bold">{weather.aqi}</span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
   );
-}
-
-export default WeatherWidget;
+};

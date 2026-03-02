@@ -1,12 +1,14 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
-function SoilInformation({ user }: { user: any }) {
+export const SoilInformation: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Soil Information</h1>
-      <p>Coming soon...</p>
+    <div className="container my-5">
+      <h1>{t('soil_info')}</h1>
+      <p className="lead">Complete information about soil management and soil quality for optimal crop growth.</p>
+      {/* Placeholder content */}
     </div>
   );
-}
-
-export default SoilInformation;
+};

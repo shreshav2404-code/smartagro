@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { register } from '../services/api';
-import '../styles/Auth.css';
+import { useAuth } from '../contexts/AuthContext';
+import { authAPI } from '../services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
-function Register() {
+export const Register: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     name: '',
+    phone: '',
     occupation: '',
-    phone_number: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { register } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,97 +29,89 @@ function Register() {
     setLoading(true);
 
     try {
-      const response = await register(
-        formData.email,
-        formData.password,
-        formData.name,
-        formData.occupation,
-        formData.phone_number
-      );
-      if (response.success) {
-        navigate('/login');
-      } else {
-        setError(response.error || 'Registration failed');
-      }
-    } catch (err: any) {
-      setError(err.message || 'Registration failed');
+      const user = await authAPI.register(formData);
+      register(user);
+      navigate('/');
+    } catch (err) {
+      setError('Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h1>GreenIQ</h1>
-        <h2>Register</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="your@email.com"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Full Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Your Name"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Occupation</label>
-            <input
-              type="text"
-              name="occupation"
-              value={formData.occupation}
-              onChange={handleChange}
-              placeholder="Farmer"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Phone Number</label>
-            <input
-              type="tel"
-              name="phone_number"
-              value={formData.phone_number}
-              onChange={handleChange}
-              placeholder="9876543210"
-              required
-            />
-          </div>
-          {error && <div className="error-message">{error}</div>}
-          <button type="submit" disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
-          </button>
-        </form>
-        <p className="auth-link">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
+    <div className="login-split">
+      <div className="login-sidebar">
+        <h1>🌱 GreenIQ</h1>
+        <p>{t('hero_subtitle')}</p>
+      </div>
+      <div className="login-content">
+        <div className="login-card">
+          <h2>{t('register')}</h2>
+          {error && <div className="alert alert-danger">{error}</div>}
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label className="form-label">{t('email')}</label>
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label className="form-label">{t('password')}</label>
+              <input
+                type="password"
+                name="password"
+                className="form-control"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label className="form-label">{t('name')}</label>
+              <input
+                type="text"
+                name="name"
+                className="form-control"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label className="form-label">{t('phone')}</label>
+              <input
+                type="tel"
+                name="phone"
+                className="form-control"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label className="form-label">{t('occupation')}</label>
+              <input
+                type="text"
+                name="occupation"
+                className="form-control"
+                value={formData.occupation}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Registering...' : t('register_button')}
+            </button>
+          </form>
+          <Link to="/login">{t('existing_user')}</Link>
+        </div>
       </div>
     </div>
   );
-}
-
-export default Register;
+};

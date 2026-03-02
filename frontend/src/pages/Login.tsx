@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../services/api';
-import '../styles/Auth.css';
+import { useAuth } from '../contexts/AuthContext';
+import { authAPI } from '../services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
-function Login({ setUser }: { setUser: (user: any) => void }) {
+export const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,58 +19,54 @@ function Login({ setUser }: { setUser: (user: any) => void }) {
     setLoading(true);
 
     try {
-      const response = await login(email, password);
-      if (response.success) {
-        localStorage.setItem('user', JSON.stringify(response.user));
-        setUser(response.user);
-        navigate('/dashboard');
-      } else {
-        setError(response.error || 'Login failed');
-      }
-    } catch (err: any) {
-      setError(err.message || 'Login failed');
+      const user = await authAPI.login({ email, password });
+      login(user);
+      navigate('/');
+    } catch (err) {
+      setError('Invalid email or password');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h1>GreenIQ</h1>
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-            />
-          </div>
-          {error && <div className="error-message">{error}</div>}
-          <button type="submit" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-        <p className="auth-link">
-          Don't have an account? <Link to="/register">Register</Link>
-        </p>
+    <div className="login-split">
+      <div className="login-sidebar">
+        <h1>🌱 GreenIQ</h1>
+        <p>{t('hero_subtitle')}</p>
+      </div>
+      <div className="login-content">
+        <div className="login-card">
+          <h2>{t('login')}</h2>
+          {error && <div className="alert alert-danger">{error}</div>}
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label className="form-label">{t('email')}</label>
+              <input
+                type="email"
+                className="form-control"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label className="form-label">{t('password')}</label>
+              <input
+                type="password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Logging in...' : t('login_button')}
+            </button>
+          </form>
+          <Link to="/register">{t('new_user')}</Link>
+        </div>
       </div>
     </div>
   );
-}
-
-export default Login;
+};

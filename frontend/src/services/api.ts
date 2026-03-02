@@ -1,45 +1,146 @@
-const API_BASE = process.env.REACT_APP_API_URL || 'https://smartagro-gyuc.onrender.com';
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
-export const apiCall = async (endpoint: string, method = 'GET', data?: any) => {
-  const url = `${API_BASE}${endpoint}`;
-  const options: RequestInit = {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-  };
+export interface WeatherData {
+  temperature: number;
+  humidity: number;
+  wind_speed: number;
+  aqi: number;
+  city: string;
+}
 
-  if (data && method !== 'GET') {
-    options.body = JSON.stringify(data);
-  }
+export interface NewsItem {
+  title: string;
+  source: string;
+  description?: string;
+}
 
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    throw new Error(`API error: ${response.statusText}`);
-  }
-  return response.json();
+export interface ChatResponse {
+  message: string;
+}
+
+export interface RegisterData {
+  email: string;
+  password: string;
+  name: string;
+  phone: string;
+  occupation: string;
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface UserData {
+  id: string;
+  email: string;
+  name: string;
+  phone: string;
+  occupation: string;
+}
+
+// Auth APIs
+export const authAPI = {
+  register: async (data: RegisterData): Promise<UserData> => {
+    const res = await fetch(`${API_BASE}/api/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Registration failed');
+    return res.json();
+  },
+
+  login: async (data: LoginData): Promise<UserData> => {
+    const res = await fetch(`${API_BASE}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Login failed');
+    return res.json();
+  },
 };
 
-export const register = (email: string, password: string, name: string, occupation: string, phone_number: string) =>
-  apiCall('/api/register/', 'POST', { email, password, name, occupation, phone_number });
+// Data APIs
+export const dataAPI = {
+  getWeather: async (city: string): Promise<WeatherData> => {
+    try {
+      const res = await fetch(`${API_BASE}/api/weather?city=${encodeURIComponent(city)}`);
+      if (!res.ok) throw new Error('Weather fetch failed');
+      return res.json();
+    } catch (error) {
+      console.error('Weather API error:', error);
+      // Fallback weather data
+      return {
+        temperature: 28,
+        humidity: 65,
+        wind_speed: 12,
+        aqi: 75,
+        city: city,
+      };
+    }
+  },
 
-export const login = (email: string, password: string) =>
-  apiCall('/api/user_login/', 'POST', { email, password });
+  getNews: async (): Promise<NewsItem[]> => {
+    try {
+      const res = await fetch(`${API_BASE}/api/news`);
+      if (!res.ok) throw new Error('News fetch failed');
+      return res.json();
+    } catch (error) {
+      console.error('News API error:', error);
+      // Fallback news data
+      return [
+        {
+          title: 'Government announces new subsidy program for farmers',
+          source: 'News',
+          description: 'Enhanced support for sustainable agriculture',
+        },
+        {
+          title: 'Crop disease identified in northern regions',
+          source: 'Alert',
+          description: 'Early warning system activated',
+        },
+      ];
+    }
+  },
 
-export const logout = () => apiCall('/api/user_logout/', 'POST');
+  getChat: async (message: string): Promise<ChatResponse> => {
+    try {
+      const res = await fetch(`${API_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+      });
+      if (!res.ok) throw new Error('Chat API failed');
+      return res.json();
+    } catch (error) {
+      console.error('Chat API error:', error);
+      return {
+        message: 'I am currently unavailable. Please try again later.',
+      };
+    }
+  },
 
-export const getWeather = (city: string) =>
-  apiCall(`/api/weather/?city=${encodeURIComponent(city)}`);
+  getMarketplace: async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/market`);
+      if (!res.ok) throw new Error('Marketplace fetch failed');
+      return res.json();
+    } catch (error) {
+      console.error('Marketplace API error:', error);
+      return { products: [] };
+    }
+  },
 
-export const getWeatherForecast = (city: string, days = 5) =>
-  apiCall(`/api/weather/forecast/?city=${encodeURIComponent(city)}&days=${days}`);
-
-export const getAirQuality = (lat: number, lon: number) =>
-  apiCall(`/api/weather/air-quality/?lat=${lat}&lon=${lon}`);
-
-export const getNews = () =>
-  apiCall('/api/news/');
-
-export const getAIResponse = (message: string) =>
-  apiCall('/api/ai_assistant/', 'POST', { message });
-
-export const getAIModels = () =>
-  apiCall('/api/ai_models/');
+  getSoilInfo: async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/soil`);
+      if (!res.ok) throw new Error('Soil info fetch failed');
+      return res.json();
+    } catch (error) {
+      console.error('Soil API error:', error);
+      return { info: 'Soil information unavailable' };
+    }
+  },
+};
