@@ -54,7 +54,6 @@ export const Footer: React.FC = () => {
                 style={socialStyle('#6b9ec2')} title="LinkedIn"><BsLinkedin /></a>
             </div>
             <p style={{ opacity: 0.6, fontSize: '13px' }}>
-              <BsEnvelope className="me-2" />support@smartagro.com<br />
               <BsGlobe className="me-2" />greeniqkeshav.vercel.app
             </p>
           </div>

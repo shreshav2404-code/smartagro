@@ -34,7 +34,6 @@ export const ContactForm: React.FC = () => {
                   <p style={{ opacity: 0.9, fontSize: '15px' }}>Have questions about farming, need help with the platform, or want to collaborate?</p>
                   <hr style={{ borderColor: 'rgba(255,255,255,0.25)' }} />
                   <div className="mt-3" style={{ fontSize: '14px' }}>
-                    <div className="mb-3"><BsEnvelope className="me-2" />support@smartagro.com</div>
                     <div className="mb-3"><BsGeoAlt className="me-2" />India</div>
                     <div className="mb-3"><BsClock className="me-2" />Mon-Sat, 9AM-6PM IST</div>
                   </div>
