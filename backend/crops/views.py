@@ -295,33 +295,10 @@ def ai_assistant(request):
             if "I apologize, I encountered an error" in reply:
                 raise Exception(f"Chat Error: {reply}")
             return JsonResponse({'reply': reply}, status=200)
-        except Exception as e:
-            api_key = getattr(settings, 'GEMINI_API_KEY', '') or ''
-            if not api_key:
-                return JsonResponse({'reply': f"I'm having trouble connecting. (Debug: {str(e)})"}, status=200)
-            
-            try:
-                genai.configure(api_key=api_key)
-                model_names = ["models/gemini-2.5-flash", "models/gemini-2.0-flash", "models/gemini-1.5-pro"]
-                response = None
-                last_err = None
-                
-                for model_name in model_names:
-                    try:
-                        model = genai.GenerativeModel(model_name)
-                        response = model.generate_content(user_message)
-                        if response:
-                            break
-                    except Exception as e:
-                        last_err = e
-                        continue
-                
-                if response:
-                    return JsonResponse({'reply': response.text}, status=200)
-                else:
-                    raise last_err or Exception("Failed to generate content with available models.")
-            except Exception as gen_err:
-                return JsonResponse({'reply': f"AI service currently unavailable. (Error: {str(gen_err)})"}, status=200)
+        except Exception as groq_hf_err:
+            # If Groq/HF fails, return graceful error with Groq as primary suggestion
+            error_msg = str(groq_hf_err)
+            return JsonResponse({'reply': f"Using Groq API. If you see this, Groq or HF encountered an error. Please try again. (Error: {error_msg[:100]})"}, status=200)
 
     except Exception as e:
         return JsonResponse({'reply': 'Sorry, I could not process your request.'}, status=200)
