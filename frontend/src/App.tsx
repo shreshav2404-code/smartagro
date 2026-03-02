@@ -5,6 +5,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { ChatWidget } from './components/ChatWidget';
+import { Footer } from './components/Footer';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
@@ -37,6 +38,7 @@ const AppLayout: React.FC = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+      {!hideNavbar && <Footer />}
       {!hideNavbar && <ChatWidget />}
     </>
   );
