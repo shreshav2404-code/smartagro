@@ -302,7 +302,7 @@ def ai_assistant(request):
             
             try:
                 genai.configure(api_key=api_key)
-                model_names = ["models/gemini-1.5-flash", "models/gemini-2.0-flash", "models/gemini-1.5-pro"]
+                model_names = ["models/gemini-2.5-flash", "models/gemini-2.0-flash", "models/gemini-1.5-pro"]
                 response = None
                 last_err = None
                 
@@ -384,7 +384,7 @@ def ai_assistant_image(request):
             }
 
             try_models = [
-                "models/gemini-1.5-flash",
+                "models/gemini-2.5-flash",
                 "models/gemini-2.0-flash",
                 "models/gemini-1.5-pro",
             ]
@@ -428,7 +428,7 @@ def ai_assistant_image(request):
             err_msg = str(gen_err)
             if 'quota' in err_msg.lower() or '429' in err_msg or 'not found' in err_msg.lower():
                 try:
-                    fallback_model = genai.GenerativeModel("models/gemini-1.5-flash", generation_config=generation_config)
+                    fallback_model = genai.GenerativeModel("models/gemini-2.5-flash", generation_config=generation_config)
                     response = fallback_model.generate_content([prompt, image_part])
                     ai_reply = getattr(response, 'text', '') or ''
                     if not ai_reply:
