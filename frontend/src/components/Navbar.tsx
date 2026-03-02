@@ -33,28 +33,24 @@ export const Navbar: React.FC = () => {
           <ul className="navbar-nav ms-auto">
             {/* Language Selector */}
             <li className="nav-item dropdown">
-              <a
+              <button
                 className="nav-link dropdown-toggle"
-                href="#"
                 id="languageDropdown"
-                role="button"
                 data-bs-toggle="dropdown"
+                style={{ border: 'none', background: 'none' }}
               >
                 🌐 {t('language_selector')}
-              </a>
+              </button>
               <ul className="dropdown-menu dropdown-menu-end">
                 {(['en', 'es', 'fr', 'hi', 'ta', 'mai'] as const).map((lang) => (
                   <li key={lang}>
-                    <a
+                    <button
                       className={`dropdown-item ${language === lang ? 'active' : ''}`}
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        changeLanguage(lang);
-                      }}
+                      onClick={() => changeLanguage(lang)}
+                      style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                     >
                       {t(lang === 'en' ? 'english' : lang === 'es' ? 'spanish' : lang === 'fr' ? 'french' : lang === 'hi' ? 'hindi' : lang === 'ta' ? 'tamil' : 'maithili')}
-                    </a>
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -62,51 +58,41 @@ export const Navbar: React.FC = () => {
 
             {/* Theme Selector */}
             <li className="nav-item dropdown">
-              <a
+              <button
                 className="nav-link dropdown-toggle"
-                href="#"
                 id="themeDropdown"
-                role="button"
                 data-bs-toggle="dropdown"
+                style={{ border: 'none', background: 'none' }}
               >
                 🎨 {theme === 'light' ? '☀️' : theme === 'dark' ? '🌙' : '✨'} Theme
-              </a>
+              </button>
               <ul className="dropdown-menu dropdown-menu-end">
                 <li>
-                  <a
+                  <button
                     className={`dropdown-item ${theme === 'light' ? 'active' : ''}`}
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      changeTheme('light');
-                    }}
+                    onClick={() => changeTheme('light')}
+                    style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                   >
                     ☀️ Light Mode
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a
+                  <button
                     className={`dropdown-item ${theme === 'dark' ? 'active' : ''}`}
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      changeTheme('dark');
-                    }}
+                    onClick={() => changeTheme('dark')}
+                    style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                   >
                     🌙 Dark Mode
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a
+                  <button
                     className={`dropdown-item ${theme === 'nightLight' ? 'active' : ''}`}
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      changeTheme('nightLight');
-                    }}
+                    onClick={() => changeTheme('nightLight')}
+                    style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                   >
                     ✨ Night Light Mode
-                  </a>
+                  </button>
                 </li>
               </ul>
             </li>
@@ -149,35 +135,34 @@ export const Navbar: React.FC = () => {
               </>
             ) : (
               <li className="nav-item dropdown">
-                <a
+                <button
                   className="nav-link dropdown-toggle"
-                  href="#"
                   id="userDropdown"
-                  role="button"
                   data-bs-toggle="dropdown"
+                  style={{ border: 'none', background: 'none' }}
                 >
                   👤 {user.name}
-                </a>
+                </button>
                 <ul className="dropdown-menu dropdown-menu-end">
                   <li>
-                    <a className="dropdown-item" href="#profile">
+                    <button
+                      className="dropdown-item"
+                      style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
+                    >
                       {t('profile')}
-                    </a>
+                    </button>
                   </li>
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
                   <li>
-                    <a
+                    <button
                       className="dropdown-item"
-                      href="#logout"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLogout();
-                      }}
+                      onClick={handleLogout}
+                      style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
                     >
                       {t('logout')}
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </li>

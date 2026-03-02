@@ -26,8 +26,9 @@ export const WeatherWidget: React.FC = () => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    fetchWeather(city);
+    fetchWeather('Delhi');
   }, []);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
