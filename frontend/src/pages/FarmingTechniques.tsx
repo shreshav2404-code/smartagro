@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { BsGearWideConnected, BsBarChartLine, BsPiggyBank, BsDroplet, BsGraphUpArrow, BsArrowRepeat, BsDropletHalf, BsBroadcastPin, BsGrid3X3, BsRecycle, BsTools, BsMoisture, BsCheckCircle, BsListOl, BsFlower1, BsChevronDown, BsChevronUp, BsBuilding, BsArrowRight } from 'react-icons/bs';
 import { FaLeaf } from 'react-icons/fa';
-import { ScrollReveal } from '../hooks/useScrollAnimation';
 
 const iconMap: Record<string, React.ComponentType<any>> = {
   'crop-rotation': BsArrowRepeat, 'drip-irrigation': BsDropletHalf, 'organic-farming': FaLeaf,
