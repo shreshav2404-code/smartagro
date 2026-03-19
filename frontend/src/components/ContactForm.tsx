@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BsEnvelopePaper, BsEnvelope, BsGeoAlt, BsClock, BsCheckCircle, BsExclamationTriangle, BsSend } from 'react-icons/bs';
+import { BsEnvelopePaper, BsGeoAlt, BsClock, BsCheckCircle, BsExclamationTriangle, BsSend } from 'react-icons/bs';
 
 const WEB3FORMS_KEY = 'a2662afb-f8c3-4bb7-b27f-b8c532568e00';
 

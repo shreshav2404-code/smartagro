@@ -1,5 +1,5 @@
 import React from 'react';
-import { BsInstagram, BsTwitterX, BsGithub, BsLinkedin, BsHeartFill, BsHouseDoor, BsGearFill, BsGlobe, BsShop, BsSearch, BsStar, BsEnvelope, BsTree } from 'react-icons/bs';
+import { BsInstagram, BsTwitterX, BsGithub, BsLinkedin, BsHeartFill, BsHouseDoor, BsGearFill, BsGlobe, BsShop, BsSearch, BsStar, BsTree } from 'react-icons/bs';
 
 export const Footer: React.FC = () => {
   const socialStyle = (bg: string) => ({
