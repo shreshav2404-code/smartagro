@@ -6,6 +6,7 @@
     { "source": "/((?!static|favicon|manifest|logo|robots).*)", "destination": "/index.html" }
   ],
   "env": {
-    "REACT_APP_API_URL": "https://smartagro-gyuc.onrender.com"
+    "REACT_APP_API_URL": "https://smartagro-gyuc.onrender.com",
+    "NODE_OPTIONS": "--no-deprecation"
   }
 }

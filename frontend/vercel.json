@@ -4,6 +4,7 @@
   "outputDirectory": "build",
   "installCommand": "npm install --legacy-peer-deps",
   "env": {
-    "REACT_APP_API_URL": "https://smartagro-gyuc.onrender.com"
+    "REACT_APP_API_URL": "https://smartagro-gyuc.onrender.com",
+    "NODE_OPTIONS": "--no-deprecation"
   }
 }
