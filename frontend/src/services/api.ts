@@ -12,6 +12,7 @@ export interface NewsItem {
   title: string;
   source: string;
   description?: string;
+  url?: string;
 }
 
 export interface ChatResponse {
